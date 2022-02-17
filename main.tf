@@ -38,7 +38,6 @@ resource "aws_instance" "main" {
     for_each = var.capacity_reservation_specification != null ? [var.capacity_reservation_specification] : []
     content {
       capacity_reservation_preference = lookup(capacity_reservation_specification.value, "capacity_reservation_preference", null)
-
       dynamic "capacity_reservation_target" {
         for_each = lookup(capacity_reservation_specification.value, "capacity_reservation_target", [])
         content {
@@ -46,9 +45,7 @@ resource "aws_instance" "main" {
         }
       }
     }
-
   }
-
 
   dynamic "root_block_device" {
     for_each = var.root_block_device
@@ -114,10 +111,8 @@ resource "aws_instance" "main" {
       delete_on_termination = lookup(network_interface.value, "delete_on_termination", null)
       device_index          = network_interface.value.device_index
       network_interface_id  = lookup(network_interface.value, "network_interface_id", null)
-
     }
   }
-
 
   volume_tags = merge(
     {

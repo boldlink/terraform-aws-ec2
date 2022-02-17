@@ -14,13 +14,13 @@ We use [checkov](https://www.checkov.io/) by bridgecrew to scan the code to vali
 
 We are using the file `.checkov.yml` for standard configuration and checks we have chosen to skip.
 
-If we must change the default configuration of Checkov we will place it on the `../example/.checkov.yml` folder of each module.
+If we must change the default configuration of Checkov we will place it on the `.checkov.yml` folder of each module.
 
-Some modules might not have a `../example/.checkov.yml` because the default checkov configuration is ok.
+Some modules might not have a `.checkov.yml` because the default checkov configuration is ok.
 
 ## Skipping checkov checks
 
-We will document skipped codes on the module `README.md` and add an `../example/.checkov.yml` file with the code(s) list(s).
+We will document skipped codes on the module `README.md` and add a `.checkov.yml` file with the code(s) list(s).
 
 By and large we don't want to skip checks, but on the situations we will some of our rationale is:
 
