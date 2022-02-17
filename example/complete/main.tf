@@ -60,7 +60,6 @@ module "ec2_instance_complete" {
     {
       device_name  = "/dev/sdh"
       virtual_name = "ephemeral0"
-
     }
   ]
 
