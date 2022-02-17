@@ -13,7 +13,7 @@ Examples available [here](https://github.com/boldlink/terraform-aws-ec2/tree/mai
 
 For this example we are using the default VPC and subnet for testing which only has public ip's. This is by design and will trigger the above FAILED check warning. By adding the warning code to `.checkov.yml` the check is skipped
 
-See [CHECKOV.md](https://github.com/boldlink/terraform-labs-modules/blob/develop/CHECKOV.md) for more information on usage options and configuration used.
+See [CHECKOV.md](https://github.com/boldlink/terraform-aws-ec2/blob/main/CHECKOV.md) for more information on usage options and configuration used.
 
 ## Documentation
 
