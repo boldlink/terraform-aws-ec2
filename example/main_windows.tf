@@ -1,24 +1,23 @@
-module "tls_private_key" {
-  source = "./../../../../tls/private_key/"
+resource "tls_private_key" "main" {
+  algorithm   = "RSA"
+  ecdsa_curve = "P224"
+  rsa_bits    = 4096
 }
 
-module "key_pair" {
-  source = "./../../../key_pair/"
-
+resource "aws_key_pair" "main" {
   key_name   = "EC2-keypair-${uuid()}" #Create/Publish keypair to AWS
-  public_key = module.tls_private_key.public_key_openssh
+  public_key = tls_private_key.main.public_key_openssh
 }
 
 resource "null_resource" "local_save_ec2_keypair" {
   provisioner "local-exec" {
-    command = "echo '${module.tls_private_key.private_key_pem}' > ${path.module}/${module.key_pair.id}.pem"
+    command = "echo '${tls_private_key.main.private_key_pem}' > ${path.module}/${aws_key_pair.main.id}.pem"
   }
 }
 
 module "ec2_instance_windows" {
   source = "./.."
 
-  depends_on                           = [module.tls_private_key]
   name                                 = "${local.name}-windows"
   ami                                  = data.aws_ami.windows.id
   instance_type                        = "m5.large"
@@ -26,7 +25,7 @@ module "ec2_instance_windows" {
   subnet_id                            = data.aws_subnet.default.id
   vpc_security_group_ids               = [data.aws_security_group.default.id]
   ebs_optimized                        = true
-  key_name                             = module.key_pair.name
+  key_name                             = aws_key_pair.main.name
   associate_public_ip_address          = true
   environment                          = "development"
   get_password_data                    = true

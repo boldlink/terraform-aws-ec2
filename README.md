@@ -4,7 +4,7 @@
 
 This terraform module creates an AWS single EC2 Instance with the option of adding more configurations to the instance before launch.
 
-Examples available [here](./example/)
+Examples available [here](https://github.com/boldlink/terraform-aws-ec2/tree/main/example/)
 
 ## Security Check
 
