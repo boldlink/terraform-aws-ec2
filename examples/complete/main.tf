@@ -3,7 +3,7 @@
 # #############################################################
 
 module "ec2_instance_complete" {
-  source                               = "./.."
+  source                               = "./../.."
   name                                 = "${local.name}-complete"
   ami                                  = data.aws_ami.amazon_linux.id
   instance_type                        = "m5.large"

@@ -3,7 +3,7 @@
 # #################################################################################################################################
 
 module "ec2_instance_t3" {
-  source                               = "./.."
+  source                               = "./../.."
   name                                 = "${local.name}-t3"
   ami                                  = data.aws_ami.amazon_linux.id
   instance_type                        = "t3.large"

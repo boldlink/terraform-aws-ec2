@@ -3,7 +3,7 @@
 # This example shows the minimum values to use this module
 # #############################################################
 module "ec2_instance_minimum" {
-  source                      = "./.."
+  source                      = "./../.."
   name                        = "${local.name}-minimum"
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = "m5.large"

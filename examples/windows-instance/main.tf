@@ -16,7 +16,7 @@ resource "null_resource" "local_save_ec2_keypair" {
 }
 
 module "ec2_instance_windows" {
-  source                               = "./.."
+  source                               = "./../.."
   name                                 = "${local.name}-windows"
   ami                                  = data.aws_ami.windows.id
   instance_type                        = "m5.large"
