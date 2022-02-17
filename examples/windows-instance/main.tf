@@ -24,7 +24,7 @@ module "ec2_instance_windows" {
   subnet_id                            = data.aws_subnet.default.id
   vpc_security_group_ids               = [data.aws_security_group.default.id]
   ebs_optimized                        = true
-  key_name                             = aws_key_pair.main.name
+  key_name                             = aws_key_pair.main.key_name
   associate_public_ip_address          = true
   environment                          = "development"
   get_password_data                    = true
