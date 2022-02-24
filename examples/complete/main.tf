@@ -19,7 +19,8 @@ resource "null_resource" "local_save_ec2_keypair" {
 }
 
 module "ec2_instance_complete" {
-  source                               = "./../.."
+  source                               = "boldlink/ec2/aws"
+  version                              = "1.0.1"
   name                                 = "${local.name}-complete"
   ami                                  = data.aws_ami.amazon_linux.id
   instance_type                        = "m5.large"
