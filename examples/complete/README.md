@@ -14,7 +14,7 @@ No requirements.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ec2_instance_complete"></a> [ec2\_instance\_complete](#module\_ec2\_instance\_complete) | ./../.. | n/a |
+| <a name="module_ec2_instance_complete"></a> [ec2\_instance\_complete](#module\_ec2\_instance\_complete) | boldlink/ec2/aws | 1.0.1 |
 
 ## Resources
 

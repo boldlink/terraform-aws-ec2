@@ -14,7 +14,7 @@ No requirements.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ec2_instance_t3"></a> [ec2\_instance\_t3](#module\_ec2\_instance\_t3) | ./../.. | n/a |
+| <a name="module_ec2_instance_t3"></a> [ec2\_instance\_t3](#module\_ec2\_instance\_t3) | boldlink/ec2/aws | 1.0.1 |
 
 ## Resources
 

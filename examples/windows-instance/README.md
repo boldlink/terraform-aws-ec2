@@ -14,7 +14,7 @@ No requirements.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ec2_instance_windows"></a> [ec2\_instance\_windows](#module\_ec2\_instance\_windows) | ./../.. | n/a |
+| <a name="module_ec2_instance_windows"></a> [ec2\_instance\_windows](#module\_ec2\_instance\_windows) | boldlink/ec2/aws | 1.0.1 |
 
 ## Resources
 
