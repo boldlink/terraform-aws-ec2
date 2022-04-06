@@ -12,14 +12,6 @@ data "aws_subnet" "default" {
   default_for_az    = true
 }
 
-data "aws_security_group" "default" {
-  vpc_id = data.aws_vpc.default.id
-
-  filter {
-    name   = "group-name"
-    values = ["default"]
-  }
-}
 data "aws_ami" "amazon_linux" {
   most_recent = true
   owners      = ["amazon"]
@@ -44,5 +36,3 @@ data "aws_ami" "windows" {
     values = ["hvm"]
   }
 }
-
-data "aws_ebs_default_kms_key" "current" {}

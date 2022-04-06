@@ -203,13 +203,6 @@ variable "tenancy" {
   default     = null
 }
 
-
-variable "vpc_security_group_ids" {
-  description = "A list of security group IDs to associate with"
-  type        = list(string)
-  default     = null
-}
-
 variable "timeouts" {
   description = "Define maximum timeout for creating, updating, and deleting EC2 instance resources"
   type        = map(string)
@@ -228,17 +221,77 @@ variable "user_data_base64" {
   default     = null
 }
 
+variable "debug_script" {
+  type        = string
+  description = "Enable set -x option for userdatam use 'off' or 'on' as values"
+  default     = "off"
+}
+
+variable "extra_script" {
+  type        = string
+  description = "Name of the extra script"
+  default     = ""
+}
 
 ## Tags
 
 variable "environment" {
   description = "The environemnt this resource is being deployed to"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "other_tags" {
   description = "For adding an additional values for tags"
   type        = map(string)
   default     = {}
+}
+
+
+variable "create_ec2_kms_key" {
+  description = "Choose whether to create kms key for ebs encryption"
+  type        = bool
+  default     = false
+}
+
+variable "vpc_id" {
+  description = "Provide the vpc id to create the security group"
+  type        = string
+  default     = null
+}
+
+variable "security_group_ingress" {
+  description = "Specify the ingress rule for the security group"
+  type        = map(string)
+  default     = {}
+}
+
+variable "create_key_pair" {
+  description = "Choose whether to create key pair"
+  type        = bool
+  default     = false
+}
+
+variable "create_instance_iam_role" {
+  description = "Choose whether to create iam instance role"
+  type        = bool
+  default     = false
+}
+
+variable "use_ebs_default_kms" {
+  description = "Choose whether to use the default ebs key for encryption"
+  type        = bool
+  default     = false
+}
+
+variable "ec2_role_policy" {
+  description = "Specify the policy for the ec2 permissions"
+  type        = string
+  default     = ""
+}
+
+variable "iam_role_path" {
+  description = "Specify the role path"
+  type        = string
+  default     = "/"
 }

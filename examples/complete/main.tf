@@ -1,22 +1,6 @@
 # #############################################################
 # This example shows the complete values to use this module
 # #############################################################
-resource "tls_private_key" "main" {
-  algorithm   = "RSA"
-  ecdsa_curve = "P224"
-  rsa_bits    = 4096
-}
-
-resource "aws_key_pair" "main" {
-  key_name   = "EC2-keypair-${uuid()}" #Create/Publish keypair to AWS
-  public_key = tls_private_key.main.public_key_openssh
-}
-
-resource "null_resource" "local_save_ec2_keypair" {
-  provisioner "local-exec" {
-    command = "echo '${tls_private_key.main.private_key_pem}' > ${path.module}/${aws_key_pair.main.id}.pem"
-  }
-}
 
 module "ec2_instance_complete" {
   source                               = "./../.."
@@ -25,10 +9,8 @@ module "ec2_instance_complete" {
   instance_type                        = "m5.large"
   availability_zone                    = data.aws_availability_zones.available.names[0]
   subnet_id                            = data.aws_subnet.default.id
-  vpc_security_group_ids               = [data.aws_security_group.default.id]
   ebs_optimized                        = true
-  key_name                             = aws_key_pair.main.key_name
-  user_data                            = base64encode(local.user_data)
+  create_ec2_kms_key                   = true
   associate_public_ip_address          = true
   environment                          = "development"
   disable_api_termination              = false
@@ -57,7 +39,6 @@ module "ec2_instance_complete" {
       volume_type           = "gp3"
       delete_on_termination = true
       encrypted             = true
-      kms_key_id            = data.aws_ebs_default_kms_key.current.key_arn
       iops                  = 300
     }
   ]
@@ -69,7 +50,6 @@ module "ec2_instance_complete" {
       volume_size           = 15
       volume_type           = "gp2"
       encrypted             = true
-      kms_key_id            = data.aws_ebs_default_kms_key.current.key_arn
     }
   ]
 
