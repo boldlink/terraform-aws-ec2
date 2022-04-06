@@ -1,5 +1,6 @@
 module "ec2_instance_windows" {
-  source                               = "./../.."
+  source                               = "boldlink/ec2/aws"
+  version                              = "1.0.1"
   name                                 = "${local.name}-windows"
   ami                                  = data.aws_ami.windows.id
   instance_type                        = "m5.large"
