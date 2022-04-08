@@ -1,10 +1,9 @@
-# #############################################################
-# This example shows the complete values to use this module
-# #############################################################
+##############################################################
+### This example shows the complete values to use this module
+##############################################################
 
 module "ec2_instance_complete" {
-  source                               = "boldlink/ec2/aws"
-  version                              = "1.0.1"
+  source                               = "./../.."
   name                                 = "${local.name}-complete"
   ami                                  = data.aws_ami.amazon_linux.id
   instance_type                        = "m5.large"

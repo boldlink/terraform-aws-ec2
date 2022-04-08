@@ -129,7 +129,6 @@ No modules.
 | <a name="output_ebs_block_device_volume_id"></a> [ebs\_block\_device\_volume\_id](#output\_ebs\_block\_device\_volume\_id) | ID of the EBS volume |
 | <a name="output_id"></a> [id](#output\_id) | The ID of the instance |
 | <a name="output_instance_state"></a> [instance\_state](#output\_instance\_state) | The state of the instance. One of: `pending`, `running`, `shutting-down`, `terminated`, `stopping`, `stopped` |
-| <a name="output_key_name"></a> [key\_name](#output\_key\_name) | The keypair used to access the instance |
 | <a name="output_outpost_arn"></a> [outpost\_arn](#output\_outpost\_arn) | The ARN of the Outpost the instance is assigned to |
 | <a name="output_password_data"></a> [password\_data](#output\_password\_data) | Base-64 encoded encrypted password data for the instance. Useful for getting the administrator password for instances running Microsoft Windows. This attribute is only exported if `get_password_data` is true |
 | <a name="output_primary_network_interface_id"></a> [primary\_network\_interface\_id](#output\_primary\_network\_interface\_id) | The ID of the instance's primary network interface |

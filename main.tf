@@ -13,14 +13,16 @@ resource "aws_kms_key" "main" {
 ### Log group (encrypted)
 ###################################
 resource "aws_kms_key" "cloudwatch" {
+  count                   = var.monitoring ? 1 : 0
   description             = "Log Group KMS key"
   policy                  = element(concat(data.aws_iam_policy_document.main.*.json, [""]), 0)
   deletion_window_in_days = 10
 }
 
 resource "aws_cloudwatch_log_group" "main" {
+  count      = var.monitoring ? 1 : 0
   name       = "/aws/ec2/${var.name}"
-  kms_key_id = aws_kms_key.cloudwatch.arn
+  kms_key_id = aws_kms_key.cloudwatch[0].arn
   tags = merge(
     {
       "Name"        = var.name
@@ -128,7 +130,7 @@ resource "aws_instance" "main" {
   monitoring                           = var.monitoring
   vpc_security_group_ids               = [aws_security_group.main.id]
   source_dest_check                    = var.source_dest_check
-  user_data                            = base64encode(data.template_cloudinit_config.config.rendered)
+  user_data                            = var.monitoring ? base64encode(data.template_cloudinit_config.config.rendered) : var.user_data
   user_data_base64                     = var.user_data_base64
   subnet_id                            = var.subnet_id
   associate_public_ip_address          = var.associate_public_ip_address
@@ -139,7 +141,7 @@ resource "aws_instance" "main" {
   tenancy                              = var.tenancy
   cpu_core_count                       = var.cpu_core_count
   cpu_threads_per_core                 = var.cpu_threads_per_core
-  get_password_data                    = var.get_password_data
+  get_password_data                    = var.create_key_pair ? var.get_password_data : null
   hibernation                          = var.hibernation
   host_id                              = var.host_id
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
@@ -174,7 +176,7 @@ resource "aws_instance" "main" {
       delete_on_termination = lookup(root_block_device.value, "delete_on_termination", null)
       encrypted             = lookup(root_block_device.value, "encrypted", null)
       iops                  = lookup(root_block_device.value, "iops", null)
-      kms_key_id            = var.create_ec2_kms_key ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms ? data.aws_ebs_default_kms_key.current.key_arn : lookup(root_block_device.value, "kms_key_id", null))
+      kms_key_id            = var.create_ec2_kms_key && lookup(root_block_device.value, "encrypted", null) == true ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms && lookup(root_block_device.value, "encrypted", null) == true ? data.aws_ebs_default_kms_key.current.key_arn : lookup(root_block_device.value, "kms_key_id", null))
       throughput            = lookup(root_block_device.value, "throughput", null)
     }
   }
@@ -186,7 +188,7 @@ resource "aws_instance" "main" {
       device_name           = ebs_block_device.value.device_name
       encrypted             = lookup(ebs_block_device.value, "encrypted", null)
       iops                  = lookup(ebs_block_device.value, "iops", null)
-      kms_key_id            = var.create_ec2_kms_key ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms ? data.aws_ebs_default_kms_key.current.key_arn : lookup(ebs_block_device.value, "kms_key_id", null))
+      kms_key_id            = var.create_ec2_kms_key && lookup(ebs_block_device.value, "encrypted", null) == true ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms && lookup(ebs_block_device.value, "encrypted", null) == true ? data.aws_ebs_default_kms_key.current.key_arn : lookup(ebs_block_device.value, "kms_key_id", null))
       snapshot_id           = lookup(ebs_block_device.value, "snapshot_id", null)
       throughput            = lookup(ebs_block_device.value, "throughput", null)
       volume_size           = lookup(ebs_block_device.value, "volume_size", null)

@@ -8,6 +8,7 @@ module "ec2_instance_windows" {
   ebs_optimized                        = true
   associate_public_ip_address          = true
   environment                          = "development"
+  create_key_pair                      = true
   get_password_data                    = true
   tenancy                              = "default"
   cpu_core_count                       = 1

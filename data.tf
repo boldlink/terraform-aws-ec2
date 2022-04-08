@@ -97,7 +97,7 @@ data "template_cloudinit_config" "config" {
     content_type = "text/x-shellscript"
     content = templatefile("${path.module}/scripts/cwldata.sh",
       {
-        log_group = aws_cloudwatch_log_group.main.name,
+        log_group = join("", aws_cloudwatch_log_group.main.*.name),
         debug     = var.debug_script,
       }
     )
@@ -106,13 +106,5 @@ data "template_cloudinit_config" "config" {
   part {
     content_type = "text/x-shellscript"
     content      = var.extra_script
-  }
-  part {
-    content_type = "text/x-shellscript"
-    content = base64gzip(templatefile("${path.module}/scripts/inspector.sh",
-      {
-        var = "value",
-      }
-    ))
   }
 }

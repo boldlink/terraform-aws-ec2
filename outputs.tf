@@ -13,11 +13,6 @@ output "availability_zone" {
   value       = aws_instance.main.availability_zone
 }
 
-output "key_name" {
-  description = "The keypair used to access the instance"
-  value       = aws_instance.main.key_name
-}
-
 output "capacity_reservation_specification" {
   description = "Capacity reservation specification of the instance"
   value       = aws_instance.main.capacity_reservation_specification

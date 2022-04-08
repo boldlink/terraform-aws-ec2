@@ -3,8 +3,7 @@
 # This example shows the minimum values to use this module
 # #############################################################
 module "ec2_instance_minimum" {
-  source                      = "boldlink/ec2/aws"
-  version                     = "1.0.1"
+  source                      = "./../.."
   name                        = "${local.name}-minimum"
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = "m5.large"
@@ -18,7 +17,6 @@ module "ec2_instance_minimum" {
       delete_on_termination = true
       volume_size           = 15
       volume_type           = "gp2"
-      encrypted             = true
     }
   ]
 }
