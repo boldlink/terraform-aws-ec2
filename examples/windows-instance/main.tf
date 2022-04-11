@@ -34,3 +34,9 @@ module "ec2_instance_windows" {
     }
   ]
 }
+
+output "outputs" {
+  value = [
+    module.ec2_instance_windows
+  ]
+}

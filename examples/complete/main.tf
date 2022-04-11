@@ -66,3 +66,9 @@ module "ec2_instance_complete" {
     delete = "15m"
   }
 }
+
+output "outputs" {
+  value = [
+    module.ec2_instance_complete,
+  ]
+}

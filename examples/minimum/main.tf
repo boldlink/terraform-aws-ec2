@@ -20,3 +20,9 @@ module "ec2_instance_minimum" {
     }
   ]
 }
+
+output "outputs" {
+  value = [
+    module.ec2_instance_minimum
+  ]
+}

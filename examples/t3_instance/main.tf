@@ -47,3 +47,9 @@ module "ec2_instance_t3" {
     }
   ]
 }
+
+output "outputs" {
+  value = [
+    module.ec2_instance_t3,
+  ]
+}
