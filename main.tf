@@ -1,15 +1,136 @@
+### Userdata -> See Scripts and data.tf
+
+##########################################################
+### KMS use default or external or one created by module
+##########################################################
+resource "aws_kms_key" "main" {
+  count                   = var.create_ec2_kms_key ? 1 : 0
+  description             = "EC2 KMS key"
+  deletion_window_in_days = 7
+}
+
+###################################
+### Log group (encrypted)
+###################################
+resource "aws_kms_key" "cloudwatch" {
+  count                   = var.monitoring ? 1 : 0
+  description             = "Log Group KMS key"
+  policy                  = element(concat(data.aws_iam_policy_document.main.*.json, [""]), 0)
+  deletion_window_in_days = 10
+}
+
+resource "aws_cloudwatch_log_group" "main" {
+  count      = var.monitoring ? 1 : 0
+  name       = "/aws/ec2/${var.name}"
+  kms_key_id = aws_kms_key.cloudwatch[0].arn
+  tags = merge(
+    {
+      "Name"        = var.name
+      "Environment" = var.environment
+    },
+    var.other_tags,
+  )
+}
+
+###################################
+### Security Group
+###################################
+resource "aws_security_group" "main" {
+  name        = "${var.name}-security-group"
+  description = "Control traffic to the EC2 instance"
+  vpc_id      = var.vpc_id
+
+  dynamic "ingress" {
+    for_each = var.security_group_ingress
+    content {
+      description      = lookup(ingress.value, "description", "inbound traffic")
+      from_port        = lookup(ingress.value, "from_port", 0)
+      to_port          = lookup(ingress.value, "to_port", 0)
+      protocol         = lookup(ingress.value, "protocol", "-1")
+      cidr_blocks      = lookup(ingress.value, "cidr_blocks", ["0.0.0.0/0"])
+      ipv6_cidr_blocks = lookup(ingress.value, "ipv6_cidr_blocks", ["::/0"])
+    }
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+}
+
+##################################################
+### Key pair (as optional)
+##################################################
+resource "tls_private_key" "main" {
+  count     = var.create_key_pair ? 1 : 0
+  algorithm = "RSA"
+  rsa_bits  = 4096
+}
+
+resource "aws_key_pair" "main" {
+  count      = var.create_key_pair ? 1 : 0
+  key_name   = "${var.name}-keypair"
+  public_key = tls_private_key.main[0].public_key_openssh
+}
+
+## For downloading the keypair to local computer
+resource "null_resource" "local_save_ec2_keypair" {
+  count = var.create_key_pair ? 1 : 0
+  provisioner "local-exec" {
+    command = "echo '${tls_private_key.main[0].private_key_pem}' > ${path.module}/${aws_key_pair.main[0].id}.pem"
+  }
+}
+
+##################################################
+### IAM Profile
+##################################################
+resource "aws_iam_instance_profile" "main" {
+  count = var.create_instance_iam_role ? 1 : 0
+  name  = "${var.name}_iam_role"
+  path  = var.iam_role_path
+  role  = aws_iam_role.main[0].name
+}
+
+resource "aws_iam_role" "main" {
+  count              = var.create_instance_iam_role ? 1 : 0
+  description        = "${var.name} EC2 IAM Role"
+  name               = "${var.name}.iam_role"
+  path               = var.iam_role_path
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+resource "aws_iam_policy" "main" {
+  count       = var.create_instance_iam_role ? 1 : 0
+  name        = "${var.name}-ec2-policy"
+  description = "${var.name} EC2 IAM policy"
+  path        = var.iam_role_path
+  policy      = var.ec2_role_policy
+}
+
+resource "aws_iam_role_policy_attachment" "main" {
+  count      = var.create_instance_iam_role ? 1 : 0
+  role       = aws_iam_role.main[0].name
+  policy_arn = aws_iam_policy.main[0].arn
+}
+
+###################################################
+### EC2 Instance
+###################################################
 resource "aws_instance" "main" {
   ami                                  = var.ami
   instance_type                        = var.instance_type
-  iam_instance_profile                 = var.iam_instance_profile
+  iam_instance_profile                 = var.create_instance_iam_role ? aws_iam_instance_profile.main[0].name : var.iam_instance_profile
   availability_zone                    = var.availability_zone
   ebs_optimized                        = var.ebs_optimized
   disable_api_termination              = var.disable_api_termination
-  key_name                             = var.key_name
+  key_name                             = var.create_key_pair ? aws_key_pair.main[0].key_name : var.key_name
   monitoring                           = var.monitoring
-  vpc_security_group_ids               = var.vpc_security_group_ids
+  vpc_security_group_ids               = [aws_security_group.main.id]
   source_dest_check                    = var.source_dest_check
-  user_data                            = var.user_data
+  user_data                            = var.monitoring ? base64encode(data.template_cloudinit_config.config.rendered) : var.user_data
   user_data_base64                     = var.user_data_base64
   subnet_id                            = var.subnet_id
   associate_public_ip_address          = var.associate_public_ip_address
@@ -20,7 +141,7 @@ resource "aws_instance" "main" {
   tenancy                              = var.tenancy
   cpu_core_count                       = var.cpu_core_count
   cpu_threads_per_core                 = var.cpu_threads_per_core
-  get_password_data                    = var.get_password_data
+  get_password_data                    = var.create_key_pair ? var.get_password_data : null
   hibernation                          = var.hibernation
   host_id                              = var.host_id
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
@@ -55,7 +176,7 @@ resource "aws_instance" "main" {
       delete_on_termination = lookup(root_block_device.value, "delete_on_termination", null)
       encrypted             = lookup(root_block_device.value, "encrypted", null)
       iops                  = lookup(root_block_device.value, "iops", null)
-      kms_key_id            = lookup(root_block_device.value, "kms_key_id", null)
+      kms_key_id            = var.create_ec2_kms_key && lookup(root_block_device.value, "encrypted", null) == true ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms && lookup(root_block_device.value, "encrypted", null) == true ? data.aws_ebs_default_kms_key.current.key_arn : lookup(root_block_device.value, "kms_key_id", null))
       throughput            = lookup(root_block_device.value, "throughput", null)
     }
   }
@@ -67,7 +188,7 @@ resource "aws_instance" "main" {
       device_name           = ebs_block_device.value.device_name
       encrypted             = lookup(ebs_block_device.value, "encrypted", null)
       iops                  = lookup(ebs_block_device.value, "iops", null)
-      kms_key_id            = lookup(ebs_block_device.value, "kms_key_id", null)
+      kms_key_id            = var.create_ec2_kms_key && lookup(ebs_block_device.value, "encrypted", null) == true ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms && lookup(ebs_block_device.value, "encrypted", null) == true ? data.aws_ebs_default_kms_key.current.key_arn : lookup(ebs_block_device.value, "kms_key_id", null))
       snapshot_id           = lookup(ebs_block_device.value, "snapshot_id", null)
       throughput            = lookup(ebs_block_device.value, "throughput", null)
       volume_size           = lookup(ebs_block_device.value, "volume_size", null)
