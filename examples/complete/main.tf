@@ -3,8 +3,8 @@
 ##############################################################
 
 module "ec2_instance_complete" {
-  source                               = "boldlink/ec2/aws"
-  name                                 = "${local.name}-complete"
+  source                               = "../../"
+  name                                 = "complete-example"
   ami                                  = data.aws_ami.amazon_linux.id
   instance_type                        = "m5.large"
   availability_zone                    = data.aws_availability_zones.available.names[0]
@@ -65,10 +65,4 @@ module "ec2_instance_complete" {
     update = "10m"
     delete = "15m"
   }
-}
-
-output "outputs" {
-  value = [
-    module.ec2_instance_complete,
-  ]
 }

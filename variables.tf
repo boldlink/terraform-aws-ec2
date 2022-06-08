@@ -1,13 +1,12 @@
 variable "name" {
   description = "The name of the stack"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "ami" {
   description = "AMI to use for the instance. Required unless launch_template is specified and the Launch Template specifes an AMI."
   type        = string
-  default     = ""
 }
 
 variable "associate_public_ip_address" {
