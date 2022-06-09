@@ -7,8 +7,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 - Fix: Fix the userdata script which runs partially
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.1.3...HEAD
-
 ## [1.1.4] - 2022-06-08
 ### Changes
 - Restructed examples
