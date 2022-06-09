@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 - Fix: Fix the userdata script which runs partially
 
+[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.1.4...HEAD
+
 ## [1.1.4] - 2022-06-08
 ### Changes
 - Restructed examples
@@ -17,14 +19,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `Makefile` for examples automation
 - Added `.gitignore` file
 
+[1.1.4]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.4
+
 ## [1.1.3] - 2022-04-28
 ### Changes
 - Restructed examples
+
+[1.1.3]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.3
 
 ## [1.1.2] - 2022-04-28
 ### Changes
 - Removed sensitive values feature from outputs
 - Modified module source
+
+[1.1.2]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.2
 
 ## [1.1.1] - 2022-04-12
 ### Changes
@@ -35,10 +43,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Feature: Network_interface
 - Feature: Metadata_options
 
+[1.1.1]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.1
+
 ## [1.0.1] - 2022-02-17
 ### Changes
 - Restructed examples
 - Added key pair creation
+
+[1.0.1]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.0.1
 
 ## [1.0.0] - 2022-02-17
 - Initial commit
