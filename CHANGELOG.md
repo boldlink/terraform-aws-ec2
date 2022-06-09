@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 - Fix: Fix the userdata script which runs partially
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.1.4...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.1.3...HEAD
 
 ## [1.1.4] - 2022-06-08
 ### Changes
@@ -18,8 +18,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `versions.tf`, which is important for pre-commit checks
 - Added `Makefile` for examples automation
 - Added `.gitignore` file
-
-[1.1.4]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.4
 
 ## [1.1.3] - 2022-04-28
 ### Changes
