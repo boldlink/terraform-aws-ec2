@@ -1,6 +1,6 @@
 module "ec2_instance_windows" {
-  source                               = "boldlink/ec2/aws"
-  name                                 = "${local.name}-windows"
+  source                               = "../../"
+  name                                 = "windows-instance-example"
   ami                                  = data.aws_ami.windows.id
   instance_type                        = "m5.large"
   availability_zone                    = data.aws_availability_zones.available.names[0]
@@ -14,6 +14,7 @@ module "ec2_instance_windows" {
   cpu_core_count                       = 1
   cpu_threads_per_core                 = 2
   instance_initiated_shutdown_behavior = "terminate"
+
   metadata_options = {
     http_endpoint               = "enabled"
     http_tokens                 = "required"
@@ -32,11 +33,5 @@ module "ec2_instance_windows" {
       iops                  = 300
       encrypted             = true
     }
-  ]
-}
-
-output "outputs" {
-  value = [
-    module.ec2_instance_windows
   ]
 }

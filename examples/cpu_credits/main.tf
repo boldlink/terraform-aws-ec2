@@ -2,8 +2,8 @@
 ### This example shows the complete values to use this module with t3 instances. Note: T3 instances have ebs optimization by default
 ######################################################################################################################################
 module "ec2_instance_t3" {
-  source                               = "boldlink/ec2/aws"
-  name                                 = "${local.name}-t3"
+  source                               = "../../"
+  name                                 = "t3-instance-cpu-credits-example"
   ami                                  = data.aws_ami.amazon_linux.id
   instance_type                        = "t3.large"
   availability_zone                    = data.aws_availability_zones.available.names[0]
@@ -24,32 +24,4 @@ module "ec2_instance_t3" {
     http_tokens                 = "required"
     http_put_response_hop_limit = 15
   }
-
-  capacity_reservation_specification = {
-    capacity_reservation_preference = "open"
-  }
-
-  root_block_device = [
-    {
-      volume_size           = 30
-      volume_type           = "gp3"
-      delete_on_termination = true
-      iops                  = 300
-    }
-  ]
-
-  ebs_block_device = [
-    {
-      delete_on_termination = true
-      device_name           = "/dev/sdg"
-      volume_size           = 15
-      volume_type           = "gp2"
-    }
-  ]
-}
-
-output "outputs" {
-  value = [
-    module.ec2_instance_t3,
-  ]
 }

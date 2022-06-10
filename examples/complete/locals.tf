@@ -1,5 +1,4 @@
 locals {
-  name          = "ec2-module"
   private_ip    = cidrhost(data.aws_subnet.default.cidr_block, 100)
   address1      = cidrhost(data.aws_subnet.default.cidr_block, 200)
   address2      = cidrhost(data.aws_subnet.default.cidr_block, 211)

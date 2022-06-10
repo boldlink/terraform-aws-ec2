@@ -2,7 +2,7 @@
 
 [<img src="https://avatars.githubusercontent.com/u/25388280?s=200&v=4" width="96"/>](https://boldlink.io)
 
-# Terraform module example with a windows instance
+# Terraform module example showing cpu credits usage
 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
@@ -23,13 +23,13 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_ec2_instance_windows"></a> [ec2\_instance\_windows](#module\_ec2\_instance\_windows) | ../../ | n/a |
+| <a name="module_ec2_instance_t3"></a> [ec2\_instance\_t3](#module\_ec2\_instance\_t3) | ../../ | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [aws_ami.windows](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
+| [aws_ami.amazon_linux](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_subnet.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_vpc.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
@@ -42,7 +42,7 @@ No inputs.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_outputs"></a> [outputs](#output\_outputs) | Output values for windows instance |
+| <a name="output_outputs"></a> [outputs](#output\_outputs) | values for t3 instance example with cpu credits |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Third party software

@@ -1,3 +1,7 @@
+[![Build Status](https://github.com/boldlink/terraform-aws-ec2/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/boldlink/terraform-aws-ec2/actions)
+
+[<img src="https://avatars.githubusercontent.com/u/25388280?s=200&v=4" width="96"/>](https://boldlink.io)
+
 # AWS EC2 Terraform module
 
 ## Description
@@ -6,14 +10,46 @@ This terraform module creates an EC2 Instance with a security group, Cloudwatch 
 
 Examples available [here](https://github.com/boldlink/terraform-aws-ec2/tree/main/examples/)
 
-## Security Check
+## Usage
+*NOTE*: These examples use the latest version of this module
 
-[Note:] The warning:
-- `CKV_AWS_88:EC2 instance should not have public IP` is triggered when we run checkov scan. We have added this code to `.checkov.yml` configuration of the example.
+*data.tf* file
+```hcl
+data "aws_availability_zones" "available" {
+  state = "available"
+}
 
-For this example we are using the default VPC and subnet for testing which only has public ip's. This is by design and will trigger the above FAILED check warning. By adding the warning code to `.checkov.yml` the check is skipped
+data "aws_vpc" "default" {
+  default = true
+}
 
-See [CHECKOV.md](https://github.com/boldlink/terraform-aws-ec2/blob/main/CHECKOV.md) for more information on usage options and configuration used.
+data "aws_subnet" "default" {
+  vpc_id            = data.aws_vpc.default.id
+  availability_zone = data.aws_availability_zones.available.names[0]
+  default_for_az    = true
+}
+
+data "aws_ami" "amazon_linux" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn-ami-hvm-*-x86_64-gp2"]
+  }
+}
+```
+
+```hcl
+module "ec2_instance_minimum" {
+  source            = "../../"
+  name              = "minimum-example"
+  ami               = data.aws_ami.amazon_linux.id
+  instance_type     = "m5.large"
+  availability_zone = data.aws_availability_zones.available.names[0]
+  subnet_id         = data.aws_subnet.default.id
+}
+```
 
 ## Documentation
 
@@ -26,16 +62,20 @@ See [CHECKOV.md](https://github.com/boldlink/terraform-aws-ec2/blob/main/CHECKOV
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.11 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0.0 |
+| <a name="requirement_null"></a> [null](#requirement\_null) | >= 3.0.0 |
+| <a name="requirement_template"></a> [template](#requirement\_template) | >= 2.0.0 |
+| <a name="requirement_tls"></a> [tls](#requirement\_tls) | >= 3.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.8.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.18.0 |
 | <a name="provider_null"></a> [null](#provider\_null) | 3.1.1 |
 | <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | 3.2.1 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 3.4.0 |
 
 ## Modules
 
@@ -69,7 +109,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_ami"></a> [ami](#input\_ami) | AMI to use for the instance. Required unless launch\_template is specified and the Launch Template specifes an AMI. | `string` | `""` | no |
+| <a name="input_ami"></a> [ami](#input\_ami) | AMI to use for the instance. Required unless launch\_template is specified and the Launch Template specifes an AMI. | `string` | n/a | yes |
 | <a name="input_associate_public_ip_address"></a> [associate\_public\_ip\_address](#input\_associate\_public\_ip\_address) | Whether to associate a public IP address with an instance in a VPC. | `bool` | `false` | no |
 | <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | AZ to start the instance in | `string` | `null` | no |
 | <a name="input_capacity_reservation_specification"></a> [capacity\_reservation\_specification](#input\_capacity\_reservation\_specification) | Describes an instance's Capacity Reservation targeting option | `any` | `null` | no |
@@ -101,7 +141,7 @@ No modules.
 | <a name="input_launch_template"></a> [launch\_template](#input\_launch\_template) | Specifies a Launch Template to configure the instance. Parameters configured on this resource will override the corresponding parameters in the Launch Template | `map(string)` | `null` | no |
 | <a name="input_metadata_options"></a> [metadata\_options](#input\_metadata\_options) | Customize the metadata options of the instance | `map(string)` | `{}` | no |
 | <a name="input_monitoring"></a> [monitoring](#input\_monitoring) | If true, the launched EC2 instance will have detailed monitoring enabled which pulls every 1m and adds additonal cost, default monitoring doesn't add costs | `bool` | `false` | no |
-| <a name="input_name"></a> [name](#input\_name) | The name of the stack | `string` | `""` | no |
+| <a name="input_name"></a> [name](#input\_name) | The name of the stack | `string` | `null` | no |
 | <a name="input_network_interface"></a> [network\_interface](#input\_network\_interface) | Customize network interfaces to be attached at instance boot time | `list(map(string))` | `[]` | no |
 | <a name="input_other_tags"></a> [other\_tags](#input\_other\_tags) | For adding an additional values for tags | `map(string)` | `{}` | no |
 | <a name="input_placement_group"></a> [placement\_group](#input\_placement\_group) | The Placement Group to start the instance in | `string` | `null` | no |
@@ -141,3 +181,25 @@ No modules.
 | <a name="output_subnet_id"></a> [subnet\_id](#output\_subnet\_id) | VPC Subnet ID where instance is launched in. |
 | <a name="output_tags_all"></a> [tags\_all](#output\_tags\_all) | A map of tags assigned to the resource, including those inherited from the provider default\_tags configuration block |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Third party software
+This repository uses third party software:
+* [pre-commit](https://pre-commit.com/) - Used to help ensure code and documentation consistency
+  * Install with `brew install pre-commit`
+  * Manually use with `pre-commit run`
+* [terraform 0.14.11](https://releases.hashicorp.com/terraform/0.14.11/) For backwards compatibility we are using version 0.14.11 for testing making this the min version tested and without issues with terraform-docs.
+* [terraform-docs](https://github.com/segmentio/terraform-docs) - Used to generate the [Inputs](#Inputs) and [Outputs](#Outputs) sections
+  * Install with `brew install terraform-docs`
+  * Manually use via pre-commit
+* [tflint](https://github.com/terraform-linters/tflint) - Used to lint the Terraform code
+  * Install with `brew install tflint`
+  * Manually use via pre-commit
+
+### Makefile
+The makefile contain in this repo is optimised for linux paths and the main purpose is to execute testing for now.
+* Create all tests:
+`$ make tests`
+* Clean all tests:
+`$ make clean`
+
+#### BOLDLink-SIG 2022
