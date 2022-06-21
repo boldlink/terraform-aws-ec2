@@ -46,7 +46,7 @@ resource "aws_security_group" "main" {
   dynamic "ingress" {
     for_each = var.security_group_ingress
     content {
-      description      = "Rule to allow ${try(ingress.value.from_port, "")} inbound traffic"
+      description      = "Rule to allow port ${try(ingress.value.from_port, "")} inbound traffic"
       from_port        = lookup(ingress.value, "from_port", 0)
       to_port          = lookup(ingress.value, "to_port", 0)
       protocol         = lookup(ingress.value, "protocol", "-1")
@@ -56,6 +56,7 @@ resource "aws_security_group" "main" {
   }
 
   egress {
+    description      = "Rule to allow all outbound traffic"
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
