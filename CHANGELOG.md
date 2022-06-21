@@ -10,6 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.1.5] - 2022-06-21
 ### Changes
 - Fix: Fix the userdata script which runs partially
+- Fix: CKV_AWS_111 #Ensure IAM policies does not allow write access without constraints
+- Fix: CKV_AWS_109 #Ensure IAM policies does not allow permissions management / resource exposure without constraints
+- Fix: CKV_AWS_8  #Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted:: For the examples, the default AWS Managed is used
+- Fix: CKV_AWS_79  #Ensure Instance Metadata Service Version 1 is not enabled:: V1 is used for the examples
 
 [1.1.5]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.5
 

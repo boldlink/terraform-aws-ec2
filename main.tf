@@ -6,6 +6,7 @@
 resource "aws_kms_key" "main" {
   count                   = var.create_ec2_kms_key ? 1 : 0
   description             = "EC2 KMS key"
+  enable_key_rotation     = var.enable_key_rotation
   deletion_window_in_days = var.key_deletion_window_in_days
 }
 
@@ -15,14 +16,16 @@ resource "aws_kms_key" "main" {
 resource "aws_kms_key" "cloudwatch" {
   count                   = var.monitoring ? 1 : 0
   description             = "Log Group KMS key"
+  enable_key_rotation     = var.enable_key_rotation
   policy                  = element(concat(data.aws_iam_policy_document.main.*.json, [""]), 0)
   deletion_window_in_days = var.key_deletion_window_in_days
 }
 
 resource "aws_cloudwatch_log_group" "main" {
-  count      = var.monitoring ? 1 : 0
-  name       = "/aws/ec2/${var.name}"
-  kms_key_id = aws_kms_key.cloudwatch[0].arn
+  count             = var.monitoring ? 1 : 0
+  name              = "/aws/ec2/${var.name}"
+  retention_in_days = var.retention_in_days
+  kms_key_id        = aws_kms_key.cloudwatch[0].arn
   tags = merge(
     {
       "Name"        = var.name
@@ -43,7 +46,7 @@ resource "aws_security_group" "main" {
   dynamic "ingress" {
     for_each = var.security_group_ingress
     content {
-      description      = lookup(ingress.value, "description", "inbound traffic")
+      description      = "Rule to allow ${try(ingress.value.from_port, "")} inbound traffic"
       from_port        = lookup(ingress.value, "from_port", 0)
       to_port          = lookup(ingress.value, "to_port", 0)
       protocol         = lookup(ingress.value, "protocol", "-1")
