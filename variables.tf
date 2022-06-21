@@ -135,6 +135,12 @@ variable "launch_template" {
   default     = null
 }
 
+variable "key_deletion_window_in_days" {
+  description = "The number of days before the key is deleted"
+  type        = number
+  default     = 7
+}
+
 variable "metadata_options" {
   description = "Customize the metadata options of the instance"
   type        = map(string)
@@ -261,7 +267,7 @@ variable "vpc_id" {
 
 variable "security_group_ingress" {
   description = "Specify the ingress rule for the security group"
-  type        = map(string)
+  type        = any
   default     = {}
 }
 
@@ -286,7 +292,7 @@ variable "use_ebs_default_kms" {
 variable "ec2_role_policy" {
   description = "Specify the policy for the ec2 permissions"
   type        = string
-  default     = ""
+  default     = null
 }
 
 variable "iam_role_path" {

@@ -81,92 +81,139 @@ EOF
 
 # Enable Cloudwatch agent advanced metrics
 
-curl -O https://s3.amazonaws.com/amazoncloudwatch-agent/linux/$${ami_architecture}/latest/AmazonCloudWatchAgent.zip
-unzip AmazonCloudWatchAgent.zip
-./install.sh
+yum -y install amazon-cloudwatch-agent
 
 cat <<EOF >./awslogs.json
 {
-	"metrics": {
-		"append_dimensions": {
-			"AutoScalingGroupName": "$${aws:AutoScalingGroupName}",
-			"ImageId": "$${aws:ImageId}",
-			"InstanceId": "$${aws:InstanceId}",
-			"InstanceType": "$${aws:InstanceType}"
-		},
-		"metrics_collected": {
-			"cpu": {
-				"measurement": [
-					"cpu_usage_idle",
-					"cpu_usage_iowait",
-					"cpu_usage_user",
-					"cpu_usage_system"
-				],
-				"metrics_collection_interval": 10,
-				"resources": [
-					"*"
-				],
-				"totalcpu": false
-			},
-			"disk": {
-				"measurement": [
-					"used_percent",
-					"inodes_free"
-				],
-				"metrics_collection_interval": 10,
-				"resources": [
-					"*"
-				]
-			},
-			"diskio": {
-				"measurement": [
-					"io_time",
-					"write_bytes",
-					"read_bytes",
-					"writes",
-					"reads"
-				],
-				"metrics_collection_interval": 10,
-				"resources": [
-					"*"
-				]
-			},
-			"mem": {
-				"measurement": [
-					"mem_used_percent"
-				],
-				"metrics_collection_interval": 10
-			},
-			"netstat": {
-				"measurement": [
-					"tcp_established",
-					"tcp_time_wait"
-				],
-				"metrics_collection_interval": 10
-			},
-			"swap": {
-				"measurement": [
-					"swap_used_percent"
-				],
-				"metrics_collection_interval": 10
-			}
-		}
-	},
-  	"logs": {
-    	"logs_collected": {
-      	"files": {
-        	"collect_list": [
-          {
-            	"file_path": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log",
-            	"log_group_name": "${log_group}",
-            	"log_stream_name": "$${aws:InstanceId}/amazon-cloudwatch-agent.log",
-            	"timezone": "Local"
-          }
-        ]
-      }
+    "agent": {
+        "metrics_collection_interval": 10,
+        "logfile": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log"
     },
-    "log_stream_name": "$${aws:InstanceId}/amazon-cloudwatch-agent.log"
-  }
+    "metrics": {
+        "metrics_collected": {
+            "cpu": {
+                "resources": [
+                    "*"
+                ],
+                "measurement": [
+                    "usage_idle",
+                    "usage_iowait",
+                    "usage_system",
+                    "usage_user"
+                ],
+                "totalcpu": false,
+                "metrics_collection_interval": 10
+            },
+            "disk": {
+                "resources": [
+                    "*"
+                ],
+                "measurement": [
+                    "free",
+                    "total",
+                    "used",
+                    "used_percent"
+                ],
+                "ignore_file_system_types": [
+                    "sysfs",
+                    "devtmpfs"
+                ],
+                "metrics_collection_interval": 60
+            },
+            "diskio": {
+                "resources": [
+                    "*"
+                ],
+                "measurement": [
+                    "reads",
+                    "writes",
+                    "read_bytes",
+                    "write_bytes",
+                    "read_time",
+                    "write_time",
+                    "io_time",
+                    "iops_in_progress"
+                ],
+                "metrics_collection_interval": 10
+            },
+            "swap": {
+                "measurement": [
+                    "free",
+                    "used",
+                    "used_percent"
+                ]
+            },
+            "mem": {
+                "measurement": [
+                    "active",
+                    "available",
+                    "available_percent",
+                    "inactive",
+                    "total",
+                    "used",
+                    "used_percent"
+                ],
+                "metrics_collection_interval": 10
+            },
+            "net": {
+                "resources": [
+                    "*"
+                ],
+                "measurement": [
+                    "bytes_sent",
+                    "bytes_recv",
+                    "drop_in",
+                    "drop_out"
+                ]
+            },
+            "netstat": {
+                "measurement": [
+                    "tcp_established",
+                    "tcp_time_wait"
+                ],
+                "metrics_collection_interval": 10
+            },
+            "processes": {
+                "measurement": [
+                    "idle",
+                    "running",
+                    "stopped",
+                    "total"
+                ]
+            }
+        },
+        "append_dimensions": {
+            "ImageId": "$${aws:ImageId}",
+            "InstanceId": "$${aws:InstanceId}",
+            "InstanceType": "$${aws:InstanceType}",
+            "AutoScalingGroupName": "$${aws:AutoScalingGroupName}"
+        },
+        "aggregation_dimensions": [
+            [
+                "ImageId"
+            ],
+            [
+                "InstanceId",
+                "InstanceType"
+            ],
+            []
+        ]
+    },
+    "logs": {
+        "logs_collected": {
+            "files": {
+                "collect_list": [
+                    {
+                        "file_path": "/opt/aws/amazon-cloudwatch-agent/logs/amazon-cloudwatch-agent.log",
+                        "log_group_name": "${log_group}",
+                        "log_stream_name": "$${aws:InstanceId}/amazon-cloudwatch-agent.log",
+                        "timezone": "Local"
+                    }
+                ]
+            }
+        },
+        "log_stream_name": "$${aws:InstanceId}/amazon-cloudwatch-agent.log"
+    }
 }
 EOF
 

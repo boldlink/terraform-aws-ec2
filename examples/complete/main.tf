@@ -3,35 +3,40 @@
 ##############################################################
 
 module "ec2_instance_complete" {
-  source                               = "../../"
-  name                                 = "complete-example"
-  ami                                  = data.aws_ami.amazon_linux.id
-  instance_type                        = "m5.large"
-  availability_zone                    = data.aws_availability_zones.available.names[0]
-  subnet_id                            = data.aws_subnet.default.id
-  ebs_optimized                        = true
-  create_ec2_kms_key                   = true
-  associate_public_ip_address          = true
-  environment                          = "development"
-  disable_api_termination              = false
-  monitoring                           = true
-  source_dest_check                    = false
-  enclave_options_enabled              = false
-  private_ip                           = local.private_ip
-  secondary_private_ips                = local.secondary_ips
-  tenancy                              = "default"
-  cpu_core_count                       = 1
-  cpu_threads_per_core                 = 2
+  source                      = "../../"
+  name                        = "complete-example"
+  ami                         = data.aws_ami.amazon_linux.id
+  instance_type               = "t2.medium"
+  availability_zone           = data.aws_availability_zones.available.names[0]
+  subnet_id                   = data.aws_subnet.default.id
+  create_ec2_kms_key          = true
+  create_key_pair             = true
+  associate_public_ip_address = true
+  create_instance_iam_role    = true
+  environment                 = "development"
+  disable_api_termination     = false
+  monitoring                  = true
+  source_dest_check           = false
+  enclave_options_enabled     = false
+  private_ip                  = local.private_ip
+  secondary_private_ips       = local.secondary_ips
+  tenancy                     = "default"
+
   instance_initiated_shutdown_behavior = "terminate"
-  metadata_options = {
-    http_endpoint               = "enabled"
-    http_tokens                 = "required"
-    http_put_response_hop_limit = 20
-  }
 
   capacity_reservation_specification = {
     capacity_reservation_preference = "open"
   }
+
+  security_group_ingress = [
+    {
+      description = "inbound ssh traffic"
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
 
   root_block_device = [
     {

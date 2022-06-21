@@ -2,17 +2,14 @@ module "ec2_instance_windows" {
   source                               = "../../"
   name                                 = "windows-instance-example"
   ami                                  = data.aws_ami.windows.id
-  instance_type                        = "m5.large"
+  instance_type                        = "t2.medium"
   availability_zone                    = data.aws_availability_zones.available.names[0]
   subnet_id                            = data.aws_subnet.default.id
-  ebs_optimized                        = true
   associate_public_ip_address          = true
   environment                          = "development"
   create_key_pair                      = true
   get_password_data                    = true
   tenancy                              = "default"
-  cpu_core_count                       = 1
-  cpu_threads_per_core                 = 2
   instance_initiated_shutdown_behavior = "terminate"
 
   metadata_options = {
