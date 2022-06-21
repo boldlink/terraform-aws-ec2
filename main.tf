@@ -118,14 +118,14 @@ resource "aws_iam_role_policy_attachment" "main" {
 
 ## Managed Policy to allow cloudwatch agent to write metrics to CloudWatch
 resource "aws_iam_role_policy_attachment" "cloudwatchagentserverpolicy" {
-  count      = var.monitoring ? 1 : 0
+  count      = var.create_instance_iam_role && var.monitoring ? 1 : 0
   policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
   role       = join("", aws_iam_role.main.*.name)
 }
 
 ## Configure CloudWatch agent to set the retention policy for log groups that it sends log events to.
 resource "aws_iam_role_policy" "logs_policy" {
-  count = var.monitoring ? 1 : 0
+  count = var.create_instance_iam_role && var.monitoring ? 1 : 0
   name  = "CloudWatchAgentPutLogsRetention"
   role  = join("", aws_iam_role.main.*.name)
 
@@ -277,4 +277,12 @@ resource "aws_instance" "main" {
     },
     var.other_tags,
   )
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+      root_block_device,
+      ebs_block_device
+    ]
+  }
 }
