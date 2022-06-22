@@ -92,78 +92,56 @@ cat <<EOF >./awslogs.json
     "metrics": {
         "metrics_collected": {
             "cpu": {
+                "measurement": [
+                    "cpu_usage_idle",
+                    "cpu_usage_iowait",
+                    "cpu_usage_user",
+                    "cpu_usage_system"
+                ],
+                "metrics_collection_interval": 10,
                 "resources": [
                     "*"
                 ],
-                "measurement": [
-                    "usage_idle",
-                    "usage_iowait",
-                    "usage_system",
-                    "usage_user"
-                ],
-                "totalcpu": false,
-                "metrics_collection_interval": 10
+                "totalcpu": true
             },
             "disk": {
-                "resources": [
-                    "*"
-                ],
                 "measurement": [
-                    "free",
-                    "total",
-                    "used",
                     "used_percent"
                 ],
-                "ignore_file_system_types": [
-                    "sysfs",
-                    "devtmpfs"
-                ],
-                "metrics_collection_interval": 60
+                "metrics_collection_interval": 10,
+                "resources": [
+                    "*"
+                ]
             },
             "diskio": {
+                "measurement": [
+                    "io_time",
+                    "write_bytes",
+                    "read_bytes",
+                    "writes",
+                    "reads"
+                ],
+                "metrics_collection_interval": 10,
                 "resources": [
                     "*"
-                ],
-                "measurement": [
-                    "reads",
-                    "writes",
-                    "read_bytes",
-                    "write_bytes",
-                    "read_time",
-                    "write_time",
-                    "io_time",
-                    "iops_in_progress"
-                ],
-                "metrics_collection_interval": 10
-            },
-            "swap": {
-                "measurement": [
-                    "free",
-                    "used",
-                    "used_percent"
                 ]
             },
             "mem": {
                 "measurement": [
-                    "active",
-                    "available",
-                    "available_percent",
-                    "inactive",
-                    "total",
-                    "used",
-                    "used_percent"
+                    "mem_used_percent"
                 ],
                 "metrics_collection_interval": 10
             },
             "net": {
-                "resources": [
-                    "*"
-                ],
                 "measurement": [
                     "bytes_sent",
                     "bytes_recv",
-                    "drop_in",
-                    "drop_out"
+                    "packets_sent",
+                    "packets_recv"
+                ],
+                "metrics_collection_interval": 10,
+                "resources": [
+                    "*"
                 ]
             },
             "netstat": {
@@ -173,13 +151,11 @@ cat <<EOF >./awslogs.json
                 ],
                 "metrics_collection_interval": 10
             },
-            "processes": {
+            "swap": {
                 "measurement": [
-                    "idle",
-                    "running",
-                    "stopped",
-                    "total"
-                ]
+                    "swap_used_percent"
+                ],
+                "metrics_collection_interval": 10
             }
         },
         "append_dimensions": {
