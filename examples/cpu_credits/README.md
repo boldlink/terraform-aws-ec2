@@ -24,6 +24,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ec2_instance_t3"></a> [ec2\_instance\_t3](#module\_ec2\_instance\_t3) | ../../ | n/a |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | git::https://github.com/boldlink/terraform-aws-vpc.git | 2.0.3 |
 
 ## Resources
 
@@ -31,8 +32,8 @@
 |------|------|
 | [aws_ami.amazon_linux](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
-| [aws_subnet.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
-| [aws_vpc.default](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
 
