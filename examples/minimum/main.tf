@@ -19,7 +19,8 @@ module "vpc" {
 }
 
 module "ec2_instance_minimum" {
-  source            = "../../"
+  source = "../../"
+  #checkov:skip=CKV_AWS_126:Ensure that detailed monitoring is enabled for EC2 instances
   name              = local.name
   ami               = data.aws_ami.amazon_linux.id
   instance_type     = "t2.small"
