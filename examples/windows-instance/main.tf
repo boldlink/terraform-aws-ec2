@@ -15,7 +15,8 @@ module "vpc" {
 }
 
 module "ec2_instance_windows" {
-  source                               = "../../"
+  source = "../../"
+  #checkov:skip=CKV_AWS_126:Ensure that detailed monitoring is enabled for EC2 instances
   name                                 = local.name
   ami                                  = data.aws_ami.windows.id
   instance_type                        = "t2.medium"
