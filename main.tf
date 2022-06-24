@@ -6,7 +6,8 @@
 resource "aws_kms_key" "main" {
   count                   = var.create_ec2_kms_key ? 1 : 0
   description             = "EC2 KMS key"
-  deletion_window_in_days = 7
+  enable_key_rotation     = var.enable_key_rotation
+  deletion_window_in_days = var.key_deletion_window_in_days
 }
 
 ###################################
@@ -15,14 +16,16 @@ resource "aws_kms_key" "main" {
 resource "aws_kms_key" "cloudwatch" {
   count                   = var.monitoring ? 1 : 0
   description             = "Log Group KMS key"
+  enable_key_rotation     = var.enable_key_rotation
   policy                  = element(concat(data.aws_iam_policy_document.main.*.json, [""]), 0)
-  deletion_window_in_days = 10
+  deletion_window_in_days = var.key_deletion_window_in_days
 }
 
 resource "aws_cloudwatch_log_group" "main" {
-  count      = var.monitoring ? 1 : 0
-  name       = "/aws/ec2/${var.name}"
-  kms_key_id = aws_kms_key.cloudwatch[0].arn
+  count             = var.monitoring ? 1 : 0
+  name              = "/aws/ec2/${var.name}"
+  retention_in_days = var.retention_in_days
+  kms_key_id        = aws_kms_key.cloudwatch[0].arn
   tags = merge(
     {
       "Name"        = var.name
@@ -43,7 +46,7 @@ resource "aws_security_group" "main" {
   dynamic "ingress" {
     for_each = var.security_group_ingress
     content {
-      description      = lookup(ingress.value, "description", "inbound traffic")
+      description      = "Rule to allow port ${try(ingress.value.from_port, "")} inbound traffic"
       from_port        = lookup(ingress.value, "from_port", 0)
       to_port          = lookup(ingress.value, "to_port", 0)
       protocol         = lookup(ingress.value, "protocol", "-1")
@@ -53,6 +56,7 @@ resource "aws_security_group" "main" {
   }
 
   egress {
+    description      = "Rule to allow all outbound traffic"
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
@@ -91,7 +95,7 @@ resource "aws_iam_instance_profile" "main" {
   count = var.create_instance_iam_role ? 1 : 0
   name  = "${var.name}_iam_role"
   path  = var.iam_role_path
-  role  = aws_iam_role.main[0].name
+  role  = join("", aws_iam_role.main.*.name)
 }
 
 resource "aws_iam_role" "main" {
@@ -103,7 +107,7 @@ resource "aws_iam_role" "main" {
 }
 
 resource "aws_iam_policy" "main" {
-  count       = var.create_instance_iam_role ? 1 : 0
+  count       = var.create_instance_iam_role && var.ec2_role_policy != null ? 1 : 0
   name        = "${var.name}-ec2-policy"
   description = "${var.name} EC2 IAM policy"
   path        = var.iam_role_path
@@ -111,9 +115,36 @@ resource "aws_iam_policy" "main" {
 }
 
 resource "aws_iam_role_policy_attachment" "main" {
-  count      = var.create_instance_iam_role ? 1 : 0
-  role       = aws_iam_role.main[0].name
+  count      = var.create_instance_iam_role && var.ec2_role_policy != null ? 1 : 0
+  role       = join("", aws_iam_role.main.*.name)
   policy_arn = aws_iam_policy.main[0].arn
+}
+
+## Managed Policy to allow cloudwatch agent to write metrics to CloudWatch
+resource "aws_iam_role_policy_attachment" "cloudwatchagentserverpolicy" {
+  count      = var.create_instance_iam_role && var.monitoring ? 1 : 0
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+  role       = join("", aws_iam_role.main.*.name)
+}
+
+## Configure CloudWatch agent to set the retention policy for log groups that it sends log events to.
+resource "aws_iam_role_policy" "logs_policy" {
+  count = var.create_instance_iam_role && var.monitoring ? 1 : 0
+  name  = "CloudWatchAgentPutLogsRetention"
+  role  = join("", aws_iam_role.main.*.name)
+
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = [
+          "logs:PutRetentionPolicy",
+        ]
+        Effect   = "Allow"
+        Resource = "*"
+      },
+    ]
+  })
 }
 
 ###################################################
@@ -176,7 +207,7 @@ resource "aws_instance" "main" {
       delete_on_termination = lookup(root_block_device.value, "delete_on_termination", null)
       encrypted             = lookup(root_block_device.value, "encrypted", null)
       iops                  = lookup(root_block_device.value, "iops", null)
-      kms_key_id            = var.create_ec2_kms_key && lookup(root_block_device.value, "encrypted", null) == true ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms && lookup(root_block_device.value, "encrypted", null) == true ? data.aws_ebs_default_kms_key.current.key_arn : lookup(root_block_device.value, "kms_key_id", null))
+      kms_key_id            = var.create_ec2_kms_key && lookup(root_block_device.value, "encrypted", null) == true ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms && lookup(root_block_device.value, "encrypted", null) == true ? "alias/aws/ebs" : lookup(root_block_device.value, "kms_key_id", null))
       throughput            = lookup(root_block_device.value, "throughput", null)
     }
   }
@@ -188,7 +219,7 @@ resource "aws_instance" "main" {
       device_name           = ebs_block_device.value.device_name
       encrypted             = lookup(ebs_block_device.value, "encrypted", null)
       iops                  = lookup(ebs_block_device.value, "iops", null)
-      kms_key_id            = var.create_ec2_kms_key && lookup(ebs_block_device.value, "encrypted", null) == true ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms && lookup(ebs_block_device.value, "encrypted", null) == true ? data.aws_ebs_default_kms_key.current.key_arn : lookup(ebs_block_device.value, "kms_key_id", null))
+      kms_key_id            = var.create_ec2_kms_key && lookup(ebs_block_device.value, "encrypted", null) == true ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms && lookup(ebs_block_device.value, "encrypted", null) == true ? "alias/aws/ebs" : lookup(ebs_block_device.value, "kms_key_id", null))
       snapshot_id           = lookup(ebs_block_device.value, "snapshot_id", null)
       throughput            = lookup(ebs_block_device.value, "throughput", null)
       volume_size           = lookup(ebs_block_device.value, "volume_size", null)
@@ -250,4 +281,12 @@ resource "aws_instance" "main" {
     },
     var.other_tags,
   )
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+      root_block_device,
+      ebs_block_device
+    ]
+  }
 }

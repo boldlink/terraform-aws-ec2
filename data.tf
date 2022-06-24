@@ -11,8 +11,6 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-data "aws_ebs_default_kms_key" "current" {}
-
 data "aws_iam_policy_document" "main" {
 
   statement {

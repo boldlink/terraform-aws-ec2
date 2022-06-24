@@ -2,15 +2,9 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-data "aws_vpc" "default" {
-  default = true
-}
+data "aws_caller_identity" "current" {}
 
-data "aws_subnet" "default" {
-  vpc_id            = data.aws_vpc.default.id
-  availability_zone = data.aws_availability_zones.available.names[0]
-  default_for_az    = true
-}
+data "aws_region" "current" {}
 
 data "aws_ami" "windows" {
   most_recent = true
