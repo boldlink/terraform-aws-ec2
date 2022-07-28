@@ -11,7 +11,6 @@ module "ec2_instance_t3" {
   subnet_id                            = local.public_subnets[0]
   ebs_optimized                        = true
   associate_public_ip_address          = true
-  environment                          = "development"
   monitoring                           = true
   source_dest_check                    = false
   enclave_options_enabled              = false
@@ -25,5 +24,5 @@ module "ec2_instance_t3" {
     http_tokens                 = "required"
     http_put_response_hop_limit = 15
   }
-  other_tags = local.tags
+  tags = local.tags
 }

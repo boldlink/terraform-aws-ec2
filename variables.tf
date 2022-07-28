@@ -245,19 +245,17 @@ variable "extra_script" {
 }
 
 ## Tags
-
-variable "environment" {
-  description = "The environemnt this resource is being deployed to"
-  type        = string
-  default     = null
-}
-
-variable "other_tags" {
-  description = "For adding an additional values for tags"
+variable "tags" {
+  description = "For adding values for tags"
   type        = map(string)
   default     = {}
 }
 
+variable "volume_tags" {
+  description = "Specify tags for instance volumes"
+  type        = map(string)
+  default     = {}
+}
 
 variable "create_ec2_kms_key" {
   description = "Choose whether to create kms key for ebs encryption"

@@ -11,5 +11,5 @@ module "ec2_instance_minimum" {
   vpc_id            = local.vpc_id
   availability_zone = local.azs[0]
   subnet_id         = local.public_subnets[0]
-  other_tags        = local.tags
+  tags              = local.tags
 }

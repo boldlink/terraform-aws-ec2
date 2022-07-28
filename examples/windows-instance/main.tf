@@ -8,7 +8,6 @@ module "ec2_instance_windows" {
   vpc_id                               = local.vpc_id
   availability_zone                    = local.azs[0]
   subnet_id                            = local.public_subnets[0]
-  environment                          = "development"
   create_key_pair                      = true
   get_password_data                    = true
   tenancy                              = "default"
@@ -34,5 +33,5 @@ module "ec2_instance_windows" {
     }
   ]
 
-  other_tags = local.tags
+  tags = local.tags
 }

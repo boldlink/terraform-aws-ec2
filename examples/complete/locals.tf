@@ -2,9 +2,18 @@ locals {
   subnet_cidr = [
     for s in data.aws_subnet.public : s.cidr_block
   ]
+
+  subnet_az = [
+    for az in data.aws_subnet.public : az.availability_zone
+  ]
+
+  subnet_id = [
+    for i in data.aws_subnet.public : i.id
+  ]
+
   name                      = "complete-ec2-example"
-  public_subnets            = flatten(data.aws_subnets.public.ids)
-  azs                       = flatten(data.aws_availability_zones.available.names)
+  public_subnets            = local.subnet_id[0]
+  azs                       = local.subnet_az[0]
   private_ip                = cidrhost(flatten(local.subnet_cidr)[0], 15)
   address1                  = cidrhost(flatten(local.subnet_cidr)[0], 5)
   address2                  = cidrhost(flatten(local.subnet_cidr)[0], 7)

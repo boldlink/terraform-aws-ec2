@@ -27,13 +27,7 @@ resource "aws_cloudwatch_log_group" "main" {
   name              = "/aws/ec2/${var.name}"
   retention_in_days = var.retention_in_days
   kms_key_id        = aws_kms_key.cloudwatch[0].arn
-  tags = merge(
-    {
-      "Name"        = var.name
-      "Environment" = var.environment
-    },
-    var.other_tags,
-  )
+  tags              = var.tags
 }
 
 ###################################
@@ -89,6 +83,7 @@ resource "aws_secretsmanager_secret" "main" {
   name                    = var.name
   recovery_window_in_days = var.recovery_window_in_days
   description             = "Private key pem for connecting to the ${var.name} instances"
+  kms_key_id              = join("", aws_kms_key.main.*.arn)
 
   lifecycle {
     create_before_destroy = true
@@ -279,21 +274,9 @@ resource "aws_instance" "main" {
     }
   }
 
-  volume_tags = merge(
-    {
-      "Name"        = var.name
-      "Environment" = var.environment
-    },
-    var.other_tags,
-  )
+  volume_tags = var.volume_tags
 
-  tags = merge(
-    {
-      "Name"        = var.name
-      "Environment" = var.environment
-    },
-    var.other_tags,
-  )
+  tags = var.tags
 
   lifecycle {
     ignore_changes = [

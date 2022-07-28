@@ -7,13 +7,12 @@ module "ec2_instance_complete" {
   ami                         = data.aws_ami.amazon_linux.id
   instance_type               = "t2.medium"
   vpc_id                      = local.vpc_id
-  availability_zone           = local.azs[2]
-  subnet_id                   = local.public_subnets[1]
+  availability_zone           = local.azs
+  subnet_id                   = local.public_subnets
   create_ec2_kms_key          = true
   create_key_pair             = true
   associate_public_ip_address = true
   create_instance_iam_role    = true
-  environment                 = "development"
   disable_api_termination     = false
   monitoring                  = true
   source_dest_check           = false
@@ -71,5 +70,5 @@ module "ec2_instance_complete" {
     delete = "15m"
   }
 
-  other_tags = local.tags
+  tags = local.tags
 }
