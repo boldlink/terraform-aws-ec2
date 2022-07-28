@@ -6,7 +6,5 @@ external-modules-download-path: .external_modules
 framework: all
 skip-check:
 - CKV_AWS_88 #EC2 instance should not have public IP.
-- CKV_AWS_111 #Ensure IAM policies does not allow write access without constraints
-- CKV_AWS_109 #Ensure IAM policies does not allow permissions management / resource exposure without constraints
 - CKV_AWS_8  #Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted:: For the examples, the default AWS Managed is used
 - CKV_AWS_79  #Ensure Instance Metadata Service Version 1 is not enabled:: V1 is used for the examples

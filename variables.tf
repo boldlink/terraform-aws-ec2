@@ -9,6 +9,12 @@ variable "ami" {
   type        = string
 }
 
+variable "recovery_window_in_days" {
+  type        = number
+  description = "(Optional) Number of days that AWS Secrets Manager waits before it can delete the secret. This value can be 0 to force deletion without recovery or range from 7 to 30 days."
+  default     = 0
+}
+
 variable "associate_public_ip_address" {
   description = "Whether to associate a public IP address with an instance in a VPC."
   type        = bool

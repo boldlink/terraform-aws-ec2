@@ -7,6 +7,7 @@ resource "aws_kms_key" "main" {
   count                   = var.create_ec2_kms_key ? 1 : 0
   description             = "EC2 KMS key"
   enable_key_rotation     = var.enable_key_rotation
+  policy                  = local.policy
   deletion_window_in_days = var.key_deletion_window_in_days
 }
 
@@ -17,7 +18,7 @@ resource "aws_kms_key" "cloudwatch" {
   count                   = var.monitoring ? 1 : 0
   description             = "Log Group KMS key"
   enable_key_rotation     = var.enable_key_rotation
-  policy                  = element(concat(data.aws_iam_policy_document.main.*.json, [""]), 0)
+  policy                  = local.policy
   deletion_window_in_days = var.key_deletion_window_in_days
 }
 
@@ -80,12 +81,24 @@ resource "aws_key_pair" "main" {
   public_key = tls_private_key.main[0].public_key_openssh
 }
 
-## For downloading the keypair to local computer
-resource "null_resource" "local_save_ec2_keypair" {
-  count = var.create_key_pair ? 1 : 0
-  provisioner "local-exec" {
-    command = "echo '${tls_private_key.main[0].private_key_pem}' > ${path.module}/${aws_key_pair.main[0].id}.pem"
+################################################
+## Store private key pem to AWS Secrets Manager
+################################################
+resource "aws_secretsmanager_secret" "main" {
+  count                   = var.create_key_pair ? 1 : 0
+  name                    = var.name
+  recovery_window_in_days = var.recovery_window_in_days
+  description             = "Private key pem for connecting to the ${var.name} instances"
+
+  lifecycle {
+    create_before_destroy = true
   }
+}
+
+resource "aws_secretsmanager_secret_version" "main" {
+  count         = var.create_key_pair ? 1 : 0
+  secret_id     = aws_secretsmanager_secret.main[0].id
+  secret_string = tls_private_key.main[0].private_key_pem
 }
 
 ##################################################

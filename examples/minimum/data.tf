@@ -12,6 +12,16 @@ data "aws_ami" "amazon_linux" {
   }
 }
 
-data "aws_caller_identity" "current" {}
+data "aws_subnets" "public" {
+  filter {
+    name   = "tag:Name"
+    values = ["${local.supporting_resources_name}*.pub.*"]
+  }
+}
 
-data "aws_region" "current" {}
+data "aws_vpc" "supporting" {
+  filter {
+    name   = "tag:Name"
+    values = [local.supporting_resources_name]
+  }
+}
