@@ -7,8 +7,8 @@ module "ec2_instance_t3" {
   ami                                  = data.aws_ami.amazon_linux.id
   instance_type                        = "t3.large"
   vpc_id                               = local.vpc_id
-  availability_zone                    = local.azs[0]
-  subnet_id                            = local.public_subnets[0]
+  availability_zone                    = local.azs
+  subnet_id                            = local.public_subnets
   ebs_optimized                        = true
   associate_public_ip_address          = true
   monitoring                           = true

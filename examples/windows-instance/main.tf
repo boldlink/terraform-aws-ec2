@@ -6,8 +6,8 @@ module "ec2_instance_windows" {
   instance_type                        = "t2.medium"
   associate_public_ip_address          = true
   vpc_id                               = local.vpc_id
-  availability_zone                    = local.azs[0]
-  subnet_id                            = local.public_subnets[0]
+  availability_zone                    = local.azs
+  subnet_id                            = local.public_subnets
   create_key_pair                      = true
   get_password_data                    = true
   tenancy                              = "default"

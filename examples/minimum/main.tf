@@ -9,7 +9,7 @@ module "ec2_instance_minimum" {
   instance_type     = "t2.small"
   monitoring        = true
   vpc_id            = local.vpc_id
-  availability_zone = local.azs[0]
-  subnet_id         = local.public_subnets[0]
+  availability_zone = local.azs
+  subnet_id         = local.public_subnets
   tags              = local.tags
 }
