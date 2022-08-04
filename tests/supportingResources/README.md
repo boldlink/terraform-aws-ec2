@@ -1,8 +1,8 @@
-[![Build Status](https://github.com/boldlink/terraform-aws-eks/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/boldlink/terraform-aws-eks/actions)
+[![Build Status](https://github.com/boldlink/terraform-aws-ec2/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/boldlink/terraform-aws-ec2/actions)
 
 [<img src="https://avatars.githubusercontent.com/u/25388280?s=200&v=4" width="96"/>](https://boldlink.io)
 
-# terraform-aws-eks supporting resources
+# terraform-aws-ec2 supporting resources
 
 These stacks are to be used on the examples testing and where setup to minimum dependencies,
 they are not in any way the recommended setup for a production grade implementation.

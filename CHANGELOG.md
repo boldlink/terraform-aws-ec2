@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix: Multiple VPCs created for examples
 - Feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
 
+## [1.1.7] - 2022-08-04
+### Changes
+- Fix: pre-commit link
+
 ## [1.1.6] - 2022-07-27
 ### Changes
 - Fix: CKV_AWS_111 #Ensure IAM policies does not allow write access without constraints
