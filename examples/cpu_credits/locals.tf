@@ -1,7 +1,20 @@
 locals {
-  name           = "cpu_credits-ec2-example"
-  cidr_block     = "172.16.0.0/16"
-  tag_env        = "Dev"
-  public_subnets = cidrsubnets(local.cidr_block, 8, 8, 8)
-  azs            = flatten(data.aws_availability_zones.available.names)
+  subnet_az = [
+    for az in data.aws_subnet.public : az.availability_zone
+  ]
+
+  subnet_id = [
+    for i in data.aws_subnet.public : i.id
+  ]
+
+  name                      = "cpu_credits-ec2-example"
+  public_subnets            = local.subnet_id[1]
+  azs                       = local.subnet_az[1]
+  supporting_resources_name = "terraform-aws-ec2"
+  vpc_id                    = data.aws_vpc.supporting.id
+  tags = {
+    environment        = "examples"
+    name               = local.name
+    "user::CostCenter" = "terraform-registry"
+  }
 }
