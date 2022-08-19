@@ -13,33 +13,6 @@ Examples available [here](https://github.com/boldlink/terraform-aws-ec2/tree/mai
 ## Usage
 *NOTE*: These examples use the latest version of this module
 
-*data.tf* file
-```hcl
-data "aws_availability_zones" "available" {
-  state = "available"
-}
-
-data "aws_vpc" "default" {
-  default = true
-}
-
-data "aws_subnet" "default" {
-  vpc_id            = data.aws_vpc.default.id
-  availability_zone = data.aws_availability_zones.available.names[0]
-  default_for_az    = true
-}
-
-data "aws_ami" "amazon_linux" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["amzn-ami-hvm-*-x86_64-gp2"]
-  }
-}
-```
-
 ```hcl
 module "ec2_instance_minimum" {
   source            = "../../"
@@ -72,9 +45,9 @@ module "ec2_instance_minimum" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.20.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.27.0 |
 | <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
-| <a name="provider_tls"></a> [tls](#provider\_tls) | 3.4.0 |
+| <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.1 |
 
 ## Modules
 
@@ -200,7 +173,7 @@ This repository uses third party software:
   * Manually use via pre-commit
 
 ### Makefile
-The makefile contain in this repo is optimised for linux paths and the main purpose is to execute testing for now.
+The makefile contained in this repo is optimized for linux paths and the main purpose is to execute testing for now.
 * Create all tests:
 `$ make tests`
 * Clean all tests:

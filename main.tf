@@ -45,7 +45,7 @@ resource "aws_security_group" "main" {
       from_port        = lookup(ingress.value, "from_port", 0)
       to_port          = lookup(ingress.value, "to_port", 0)
       protocol         = lookup(ingress.value, "protocol", "-1")
-      cidr_blocks      = lookup(ingress.value, "cidr_blocks", ["0.0.0.0/0"])
+      cidr_blocks      = lookup(ingress.value, "cidr_blocks", [var.vpc_id])
       ipv6_cidr_blocks = lookup(ingress.value, "ipv6_cidr_blocks", ["::/0"])
     }
   }

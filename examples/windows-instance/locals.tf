@@ -14,8 +14,8 @@ locals {
   vpc_id                    = data.aws_vpc.supporting.id
 
   tags = {
-    environment        = "examples"
-    name               = local.name
+    Environment        = "examples"
+    Name               = local.name
     "user::CostCenter" = "terraform-registry"
   }
 }
