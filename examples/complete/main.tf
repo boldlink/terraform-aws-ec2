@@ -12,6 +12,7 @@ module "ec2_instance_complete" {
   create_ec2_kms_key          = true
   create_key_pair             = true
   associate_public_ip_address = true
+  ebs_optimized               = true
   create_instance_iam_role    = true
   disable_api_termination     = false
   monitoring                  = true
@@ -33,7 +34,7 @@ module "ec2_instance_complete" {
       from_port   = 22
       to_port     = 22
       protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = [local.vpc_id]
     }
   ]
 
