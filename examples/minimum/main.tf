@@ -6,8 +6,9 @@ module "ec2_instance_minimum" {
   #checkov:skip=CKV_AWS_126:Ensure that detailed monitoring is enabled for EC2 instances
   name              = local.name
   ami               = data.aws_ami.amazon_linux.id
-  instance_type     = "t2.small"
+  instance_type     = "t3.small"
   monitoring        = true
+  ebs_optimized     = true
   vpc_id            = local.vpc_id
   availability_zone = local.azs
   subnet_id         = local.public_subnets

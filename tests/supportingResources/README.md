@@ -7,7 +7,6 @@
 These stacks are to be used on the examples testing and where setup to minimum dependencies,
 they are not in any way the recommended setup for a production grade implementation.
 
-
 This stack builds:
 * VPC with public and Private subnets
 
@@ -23,7 +22,7 @@ This stack builds:
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.24.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.27.0 |
 
 ## Modules
 
@@ -71,7 +70,7 @@ first and use data sources on the examples to use the stacks.
 Any supporting resources will be available on the `tests/supportingResources` and the lifecycle is managed by the `Makefile` targets.
 
 ### Makefile
-The makefile contain in this repo is optimised for linux paths and the main purpose is to execute testing for now.
+The makefile contained in this repo is optimized for linux paths and the main purpose is to execute testing for now.
 * Create all tests stacks including any supporting resources:
 ```console
 make tests

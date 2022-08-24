@@ -3,8 +3,10 @@ module "ec2_instance_windows" {
   #checkov:skip=CKV_AWS_126:Ensure that detailed monitoring is enabled for EC2 instances
   name                                 = local.name
   ami                                  = data.aws_ami.windows.id
-  instance_type                        = "t2.medium"
+  instance_type                        = "t3.medium"
   associate_public_ip_address          = true
+  create_ec2_kms_key                   = true
+  ebs_optimized                        = true
   vpc_id                               = local.vpc_id
   availability_zone                    = local.azs
   subnet_id                            = local.public_subnets

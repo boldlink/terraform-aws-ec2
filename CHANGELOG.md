@@ -5,11 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+- fix: CKV_AWS_149 Ensure that Secrets Manager secret is encrypted using KMS CMK
+- fix: CKV_AWS_158: Ensure that CloudWatch Log Group is encrypted by KMS
+- fix: CKV_AWS_88: EC2 instance should not have public IP.
+- fix: CKV_AWS_79  Ensure Instance Metadata Service Version 1 is not enabled:: V1 is used for the examples
+- fix: CKV_AWS_8 #Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted
 - Feature: Add Operating System flexibility in script (i.e download/install packages depending on OS flavor)
-- Fix: CKV_AWS_8  #Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted:: For the examples, the default AWS Managed is used
-- Fix: CKV_AWS_79  #Ensure Instance Metadata Service Version 1 is not enabled:: V1 is used for the examples
-- Fix: Multiple VPCs created for examples
 - Feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
+
+## [1.1.8] - 2022-08-24
+### Changes
+- fix: CKV_AWS_135 Ensure that EC2 is EBS optimized
+- fix: CKV_AWS_24 Ensure no security groups allow ingress from 0.0.0.0:0 to port 22
 
 ## [1.1.7] - 2022-08-04
 ### Changes
@@ -64,7 +71,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2022-02-17
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.1.6...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.1.8...HEAD
+[1.1.8]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.8
+[1.1.7]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.7
 [1.1.6]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.6
 [1.1.5]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.5
 [1.1.4]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.4

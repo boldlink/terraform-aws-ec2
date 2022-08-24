@@ -21,9 +21,10 @@ locals {
   secondary_ips             = [local.address1, local.address2, local.address3]
   supporting_resources_name = "terraform-aws-ec2"
   vpc_id                    = data.aws_vpc.supporting.id
+  vpc_cidr                  = data.aws_vpc.supporting.cidr_block
   tags = {
-    environment        = "examples"
-    name               = local.name
+    Environment        = "examples"
+    Name               = local.name
     "user::CostCenter" = "terraform-registry"
   }
 }

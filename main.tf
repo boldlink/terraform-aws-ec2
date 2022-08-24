@@ -42,11 +42,11 @@ resource "aws_security_group" "main" {
     for_each = var.security_group_ingress
     content {
       description      = "Rule to allow port ${try(ingress.value.from_port, "")} inbound traffic"
-      from_port        = lookup(ingress.value, "from_port", 0)
-      to_port          = lookup(ingress.value, "to_port", 0)
-      protocol         = lookup(ingress.value, "protocol", "-1")
-      cidr_blocks      = lookup(ingress.value, "cidr_blocks", ["0.0.0.0/0"])
-      ipv6_cidr_blocks = lookup(ingress.value, "ipv6_cidr_blocks", ["::/0"])
+      from_port        = try(ingress.value.from_port, null)
+      to_port          = try(ingress.value.to_port, null)
+      protocol         = try(ingress.value.protocol, null)
+      cidr_blocks      = try(ingress.value.cidr_blocks, [])
+      ipv6_cidr_blocks = try(ingress.value.ipv6_cidr_blocks, [])
     }
   }
 

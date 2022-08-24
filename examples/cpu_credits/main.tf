@@ -10,6 +10,7 @@ module "ec2_instance_t3" {
   availability_zone                    = local.azs
   subnet_id                            = local.public_subnets
   ebs_optimized                        = true
+  create_ec2_kms_key                   = true
   associate_public_ip_address          = true
   monitoring                           = true
   source_dest_check                    = false
