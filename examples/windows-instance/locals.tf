@@ -12,7 +12,6 @@ locals {
   azs                       = local.subnet_az[0]
   supporting_resources_name = "terraform-aws-ec2"
   vpc_id                    = data.aws_vpc.supporting.id
-
   tags = {
     Environment        = "examples"
     Name               = local.name
