@@ -9,10 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_AWS_158: Ensure that CloudWatch Log Group is encrypted by KMS
 - fix: CKV_AWS_88: EC2 instance should not have public IP.
 - fix: CKV_AWS_79  Ensure Instance Metadata Service Version 1 is not enabled:: V1 is used for the examples
+- fix: CKV_AWS_8 #Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted
 - Feature: Add Operating System flexibility in script (i.e download/install packages depending on OS flavor)
 - Feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
 
-## [1.1.8] - 2022-08-18
+## [1.1.8] - 2022-08-24
 ### Changes
 - fix: CKV_AWS_135 Ensure that EC2 is EBS optimized
 - fix: CKV_AWS_24 Ensure no security groups allow ingress from 0.0.0.0:0 to port 22
