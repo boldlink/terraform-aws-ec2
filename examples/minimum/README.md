@@ -1,4 +1,5 @@
 [![Build Status](https://github.com/boldlink/terraform-aws-ec2/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/boldlink/terraform-aws-ec2/actions)
+[![Build Status](https://github.com/boldlink/terraform-aws-ec2/actions/workflows/checkov.yml/badge.svg)](https://github.com/boldlink/terraform-aws-ec2/actions)
 
 [<img src="https://avatars.githubusercontent.com/u/25388280?s=200&v=4" width="96"/>](https://boldlink.io)
 
@@ -6,41 +7,7 @@
 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-## Requirements
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.11 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.20.0 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.27.0 |
-
-## Modules
-
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_ec2_instance_minimum"></a> [ec2\_instance\_minimum](#module\_ec2\_instance\_minimum) | ../../ | n/a |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [aws_ami.amazon_linux](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
-| [aws_subnet.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
-| [aws_subnets.public](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets) | data source |
-| [aws_vpc.supporting](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
-
-## Inputs
-
-No inputs.
-
-## Outputs
-
-No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Third party software

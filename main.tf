@@ -261,8 +261,8 @@ resource "aws_instance" "main" {
 
   metadata_options {
     http_endpoint               = lookup(var.metadata_options, "http_endpoint", "enabled")
-    http_put_response_hop_limit = lookup(var.metadata_options, "http_put_response_hop_limit", 1)
-    http_tokens                 = lookup(var.metadata_options, "http_tokens", "optional")
+    http_put_response_hop_limit = lookup(var.metadata_options, "http_put_response_hop_limit", 10)
+    http_tokens                 = lookup(var.metadata_options, "http_tokens", "required")
   }
 
   dynamic "network_interface" {
