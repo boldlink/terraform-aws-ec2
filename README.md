@@ -46,7 +46,7 @@ module "ec2_instance_minimum" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.28.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.29.0 |
 | <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | 4.0.2 |
 
