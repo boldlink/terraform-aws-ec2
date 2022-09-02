@@ -6,8 +6,9 @@ if [ $${DEBUG} == 'on' ]; then
     set -x
 fi
 
-instance_id=$(curl http://169.254.169.254/latest/meta-data/instance-id | cut -d "-" -f 2)
-container_instance_id=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 300")
+instance_id=$(curl http://169.254.169.254/latest/meta-data/instance-id -H "X-aws-ec2-metadata-token: $TOKEN" | cut -d "-" -f 2)
+container_instance_id=$(curl http://169.254.169.254/latest/meta-data/instance-id -H "X-aws-ec2-metadata-token: $TOKEN")
 
 # Force the update.
 yum update -y

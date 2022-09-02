@@ -6,9 +6,10 @@ if [ $${DEBUG} == 'on' ]; then
     set -x
 fi
 
-instance_id=$(curl http://169.254.169.254/latest/meta-data/instance-id | cut -d "-" -f 2)
-ami_architecture=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document/ | jq  -r ".architecture")
-az=$(curl http://169.254.169.254/latest/meta-data/placement/availability-zone)
+TOKEN=$(curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 300")
+instance_id=$(curl http://169.254.169.254/latest/meta-data/instance-id -H "X-aws-ec2-metadata-token: $TOKEN" | cut -d "-" -f 2)
+ami_architecture=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document/ -H "X-aws-ec2-metadata-token: $TOKEN" | jq  -r ".architecture")
+az=$(curl http://169.254.169.254/latest/meta-data/placement/availability-zone -H "X-aws-ec2-metadata-token: $TOKEN")
 region="$${az::-1}"
 log_group="${log_group}"
 

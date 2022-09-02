@@ -1,4 +1,5 @@
 [![Build Status](https://github.com/boldlink/terraform-aws-ec2/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/boldlink/terraform-aws-ec2/actions)
+[![Build Status](https://github.com/boldlink/terraform-aws-ec2/actions/workflows/checkov.yml/badge.svg)](https://github.com/boldlink/terraform-aws-ec2/actions)
 
 [<img src="https://avatars.githubusercontent.com/u/25388280?s=200&v=4" width="96"/>](https://boldlink.io)
 
@@ -17,7 +18,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.27.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.29.0 |
 
 ## Modules
 
