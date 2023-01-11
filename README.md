@@ -7,7 +7,7 @@
 
 ## Description
 
-This terraform module creates an EC2 Instance with a security group, Cloudwatch Log Group for EC2 detailed monitoring, KMS key to encrypt/decrypt the ebs volumes, and another KMS key for Log Group. Keypair and Instance IAM role creation is optional.
+This terraform module creates an EC2 Instance with a security group, Cloudwatch Log Group for EC2 detailed monitoring, a KMS key to encryption, Keypair and Instance IAM role creation is optional.
 
 Examples available [here](https://github.com/boldlink/terraform-aws-ec2/tree/main/examples/)
 
