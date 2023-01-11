@@ -13,6 +13,7 @@ on:
       - 'releases/*'
       - 'chore/*'
       - 'chores/*'
+permissions: read-all
 jobs:
   scan:
     runs-on: ubuntu-latest

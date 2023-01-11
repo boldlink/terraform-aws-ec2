@@ -13,8 +13,14 @@ locals {
   supporting_resources_name = "terraform-aws-ec2"
   vpc_id                    = data.aws_vpc.supporting.id
   tags = {
-    Environment        = "examples"
+    Environment        = "example"
     Name               = local.name
     "user::CostCenter" = "terraform-registry"
+    InstanceScheduler  = true
+    Department         = "DevOps"
+    Project            = "Examples"
+    Owner              = "Boldlink"
+    LayerName          = "c300-ec2-module-examples"
+    LayerId            = "c300"
   }
 }

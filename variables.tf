@@ -251,16 +251,16 @@ variable "tags" {
   default     = {}
 }
 
-variable "volume_tags" {
-  description = "Specify tags for instance volumes"
-  type        = map(string)
-  default     = {}
-}
-
 variable "create_ec2_kms_key" {
   description = "Choose whether to create kms key for ebs encryption"
   type        = bool
   default     = false
+}
+
+variable "kms_key_id" {
+  description = "value"
+  type        = string
+  default     = null
 }
 
 variable "vpc_id" {

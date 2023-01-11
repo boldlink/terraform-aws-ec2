@@ -15,6 +15,7 @@ on:
       - 'chore/*'
       - 'chores/*'
 
+permissions: read-all
 env:
   TF_VER: "0.14.11"
   TF_DOCS_VER: "v0.16.0"
@@ -23,6 +24,7 @@ env:
 
 jobs:
   pre-commit:
+    permissions: write-all
     runs-on: ubuntu-latest
     steps:
     - name: Git checkout

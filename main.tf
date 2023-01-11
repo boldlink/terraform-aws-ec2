@@ -11,22 +11,11 @@ resource "aws_kms_key" "main" {
   deletion_window_in_days = var.key_deletion_window_in_days
 }
 
-###################################
-### Log group (encrypted)
-###################################
-resource "aws_kms_key" "cloudwatch" {
-  count                   = var.monitoring ? 1 : 0
-  description             = "Log Group KMS key"
-  enable_key_rotation     = var.enable_key_rotation
-  policy                  = local.policy
-  deletion_window_in_days = var.key_deletion_window_in_days
-}
-
 resource "aws_cloudwatch_log_group" "main" {
   count             = var.monitoring ? 1 : 0
   name              = "/aws/ec2/${var.name}"
   retention_in_days = var.retention_in_days
-  kms_key_id        = aws_kms_key.cloudwatch[0].arn
+  kms_key_id        = var.kms_key_id == null ? join("", aws_kms_key.main.*.arn) : var.kms_key_id
   tags              = var.tags
 }
 
@@ -37,6 +26,7 @@ resource "aws_security_group" "main" {
   name        = "${var.name}-security-group"
   description = "Control traffic to the EC2 instance"
   vpc_id      = var.vpc_id
+  tags        = var.tags
 
   dynamic "ingress" {
     for_each = var.security_group_ingress
@@ -73,6 +63,7 @@ resource "aws_key_pair" "main" {
   count      = var.create_key_pair ? 1 : 0
   key_name   = "${var.name}-keypair"
   public_key = tls_private_key.main[0].public_key_openssh
+  tags       = var.tags
 }
 
 ################################################
@@ -83,7 +74,8 @@ resource "aws_secretsmanager_secret" "main" {
   name                    = var.name
   recovery_window_in_days = var.recovery_window_in_days
   description             = "Private key pem for connecting to the ${var.name} instances"
-  kms_key_id              = join("", aws_kms_key.main.*.arn)
+  kms_key_id              = var.kms_key_id == null ? join("", aws_kms_key.main.*.arn) : var.kms_key_id
+  tags                    = var.tags
 
   lifecycle {
     create_before_destroy = true
@@ -104,6 +96,7 @@ resource "aws_iam_instance_profile" "main" {
   name  = "${var.name}_iam_role"
   path  = var.iam_role_path
   role  = join("", aws_iam_role.main.*.name)
+  tags  = var.tags
 }
 
 resource "aws_iam_role" "main" {
@@ -215,7 +208,7 @@ resource "aws_instance" "main" {
       delete_on_termination = lookup(root_block_device.value, "delete_on_termination", null)
       encrypted             = lookup(root_block_device.value, "encrypted", null)
       iops                  = lookup(root_block_device.value, "iops", null)
-      kms_key_id            = var.create_ec2_kms_key && lookup(root_block_device.value, "encrypted", null) == true ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms && lookup(root_block_device.value, "encrypted", null) == true ? "alias/aws/ebs" : lookup(root_block_device.value, "kms_key_id", null))
+      kms_key_id            = var.create_ec2_kms_key && lookup(root_block_device.value, "encrypted") ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms && lookup(root_block_device.value, "encrypted") ? "alias/aws/ebs" : lookup(root_block_device.value, "kms_key_id", null))
       throughput            = lookup(root_block_device.value, "throughput", null)
     }
   }
@@ -227,7 +220,7 @@ resource "aws_instance" "main" {
       device_name           = ebs_block_device.value.device_name
       encrypted             = lookup(ebs_block_device.value, "encrypted", null)
       iops                  = lookup(ebs_block_device.value, "iops", null)
-      kms_key_id            = var.create_ec2_kms_key && lookup(ebs_block_device.value, "encrypted", null) == true ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms && lookup(ebs_block_device.value, "encrypted", null) == true ? "alias/aws/ebs" : lookup(ebs_block_device.value, "kms_key_id", null))
+      kms_key_id            = var.create_ec2_kms_key && lookup(ebs_block_device.value, "encrypted") ? aws_kms_key.main[0].arn : (var.use_ebs_default_kms && lookup(ebs_block_device.value, "encrypted") ? "alias/aws/ebs" : lookup(ebs_block_device.value, "kms_key_id", null))
       snapshot_id           = lookup(ebs_block_device.value, "snapshot_id", null)
       throughput            = lookup(ebs_block_device.value, "throughput", null)
       volume_size           = lookup(ebs_block_device.value, "volume_size", null)
@@ -274,7 +267,7 @@ resource "aws_instance" "main" {
     }
   }
 
-  volume_tags = var.volume_tags
+  volume_tags = var.tags
 
   tags = var.tags
 
