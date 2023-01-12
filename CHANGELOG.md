@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CKV_AWS_149 #Ensure that Secrets Manager secret is encrypted using KMS CMK
 - CKV_AWS_158 #Ensure that CloudWatch Log Group is encrypted by KMS
 - Use only one CMK for encryption in the module
+- Added new github workflow files & config files.
 
 ## [1.1.9] - 2022-09-02
 ### Changes
