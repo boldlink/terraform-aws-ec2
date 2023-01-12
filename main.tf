@@ -9,6 +9,13 @@ resource "aws_kms_key" "main" {
   enable_key_rotation     = var.enable_key_rotation
   policy                  = local.policy
   deletion_window_in_days = var.key_deletion_window_in_days
+  tags                    = var.tags
+}
+
+resource "aws_kms_alias" "main" {
+  count         = var.create_ec2_kms_key ? 1 : 0
+  name          = "alias/${var.name}-key"
+  target_key_id = aws_kms_key.main[0].key_id
 }
 
 resource "aws_cloudwatch_log_group" "main" {
