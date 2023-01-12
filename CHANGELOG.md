@@ -12,11 +12,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
 - Feat: use vpc version to 3.0.2 in supporting resources
 
-## [1.1.10] - 2023-01-10
+## [1.2.0] - 2023-01-10
 ### Changes
-- CKV_AWS_149 #Ensure that Secrets Manager secret is encrypted using KMS CMK
-- CKV_AWS_158 #Ensure that CloudWatch Log Group is encrypted by KMS
-- Use only one CMK for encryption in the module
+- fix: CKV_AWS_149 #Ensure that Secrets Manager secret is encrypted using KMS CMK
+- fix: CKV_AWS_158 #Ensure that CloudWatch Log Group is encrypted by KMS
+- feat: Use only one CMK for encryption in the module
 - Added new github workflow files & config files.
 
 ## [1.1.9] - 2022-09-02
@@ -82,7 +82,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial commit
 
 [Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.1.9...HEAD
-[1.1.10]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.10
+[1.2.0]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.0
 [1.1.9]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.9
 [1.1.8]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.8
 [1.1.7]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.7
