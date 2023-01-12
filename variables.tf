@@ -258,7 +258,7 @@ variable "create_ec2_kms_key" {
 }
 
 variable "kms_key_id" {
-  description = "value"
+  description = "Amazon Resource Name (ARN) of the KMS Key to use when encrypting"
   type        = string
   default     = null
 }
