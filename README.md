@@ -28,7 +28,6 @@ Examples available [here](./examples/)
 ```hcl
 module "ec2_instance_minimum" {
   source            = "boldlink/ec2/aws"
-  version           = "1.2.0"
   name              = "minimum-example"
   ami               = data.aws_ami.amazon_linux.id
   instance_type     = "m5.large"
