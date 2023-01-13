@@ -21,6 +21,6 @@ locals {
     Project            = "Examples"
     Owner              = "Boldlink"
     LayerName          = "cExample"
-    LayerId            = "c300"
+    LayerId            = "cExample"
   }
 }
