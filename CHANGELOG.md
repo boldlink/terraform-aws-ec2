@@ -81,7 +81,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2022-02-17
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.1.9...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.2.0...HEAD
 [1.2.0]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.0
 [1.1.9]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.9
 [1.1.8]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.8

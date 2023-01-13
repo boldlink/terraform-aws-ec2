@@ -15,6 +15,11 @@
 
 This terraform module creates an EC2 Instance with a security group, Cloudwatch Log Group for EC2 detailed monitoring, a KMS key to encryption, Keypair and Instance IAM role creation is optional.
 
+### Why choose this module over the standard resources
+- Follows aws security best practices and uses checkov to ensure compliance.
+- Has elaborate examples that you can use to setup your ec2 instance within a very short time.
+- Ability to create associated ec2 resources with minimum configuration changes.
+
 Examples available [here](./examples/)
 
 ## Usage
