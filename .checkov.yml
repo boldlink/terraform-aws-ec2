@@ -6,6 +6,4 @@ external-modules-download-path: .external_modules
 framework: all
 skip-check:
 - CKV_AWS_88 #EC2 instance should not have public IP.
-- CKV_AWS_149 #Ensure that Secrets Manager secret is encrypted using KMS CMK
-- CKV_AWS_158 #Ensure that CloudWatch Log Group is encrypted by KMS
 - CKV_AWS_8 #Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted
