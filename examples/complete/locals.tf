@@ -30,7 +30,7 @@ locals {
     Department         = "DevOps"
     Project            = "Examples"
     Owner              = "Boldlink"
-    LayerName          = "c300-ec2-module-examples"
+    LayerName          = "cExample"
     LayerId            = "c300"
   }
 }
