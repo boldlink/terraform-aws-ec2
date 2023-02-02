@@ -1,5 +1,5 @@
 module "ec2_instance_windows" {
-  source = "../../"
+  source                               = "../../"
   name                                 = local.name
   ami                                  = data.aws_ami.windows.id
   instance_type                        = "t3.medium"

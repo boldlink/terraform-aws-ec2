@@ -2,24 +2,24 @@
 ### This example shows the complete values to use this module
 ##############################################################
 module "ec2_instance_complete" {
-  source                      = "../../"
-  name                        = local.name
-  ami                         = data.aws_ami.amazon_linux.id
-  instance_type               = "t3.medium"
-  vpc_id                      = local.vpc_id
-  availability_zone           = local.azs
-  subnet_id                   = local.public_subnets
-  create_ec2_kms_key          = true
-  create_key_pair             = true
-  ebs_optimized               = true
-  create_instance_iam_role    = true
-  disable_api_termination     = false
-  monitoring                  = true
-  source_dest_check           = false
-  enclave_options_enabled     = false
-  private_ip                  = local.private_ip
-  secondary_private_ips       = local.secondary_ips
-  tenancy                     = "default"
+  source                   = "../../"
+  name                     = local.name
+  ami                      = data.aws_ami.amazon_linux.id
+  instance_type            = "t3.medium"
+  vpc_id                   = local.vpc_id
+  availability_zone        = local.azs
+  subnet_id                = local.public_subnets
+  create_ec2_kms_key       = true
+  create_key_pair          = true
+  ebs_optimized            = true
+  create_instance_iam_role = true
+  disable_api_termination  = false
+  monitoring               = true
+  source_dest_check        = false
+  enclave_options_enabled  = false
+  private_ip               = local.private_ip
+  secondary_private_ips    = local.secondary_ips
+  tenancy                  = "default"
 
   instance_initiated_shutdown_behavior = "terminate"
 
