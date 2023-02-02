@@ -11,7 +11,6 @@ module "ec2_instance_complete" {
   subnet_id                   = local.public_subnets
   create_ec2_kms_key          = true
   create_key_pair             = true
-  associate_public_ip_address = true
   ebs_optimized               = true
   create_instance_iam_role    = true
   disable_api_termination     = false
