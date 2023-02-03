@@ -14,8 +14,8 @@ module "ec2_instance_minimum" {
   tags              = local.tags
   root_block_device = [
     {
-      volume_size           = 15
-      encrypted             = true
+      volume_size = 15
+      encrypted   = true
     }
-  ]  
+  ]
 }
