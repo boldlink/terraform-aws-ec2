@@ -12,4 +12,10 @@ module "ec2_instance_minimum" {
   availability_zone = local.azs
   subnet_id         = local.public_subnets
   tags              = local.tags
+  root_block_device = [
+    {
+      volume_size           = 15
+      encrypted             = true
+    }
+  ]  
 }
