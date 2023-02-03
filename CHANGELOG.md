@@ -5,12 +5,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- fix: CKV_AWS_88: EC2 instance should not have public IP.
+
 - fix: CKV_AWS_79  Ensure Instance Metadata Service Version 1 is not enabled:: V1 is used for the examples
-- fix: CKV_AWS_8 #Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted
 - Feature: Add Operating System flexibility in script (i.e download/install packages depending on OS flavor)
 - Feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
 - Feat: use vpc version to 3.0.2 in supporting resources
+
+##  [1.2.1] - 2023-02-03
+### Changes
+- fix: CKV_AWS_88: EC2 instance should not have public IP.
+- fix: CKV_AWS_8 :Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted
 
 ## [1.2.0] - 2023-01-10
 ### Changes
@@ -81,7 +85,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2022-02-17
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.2.0...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.2.1...HEAD
+[1.2.1]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.1
 [1.2.0]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.0
 [1.1.9]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.9
 [1.1.8]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.8
