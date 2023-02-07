@@ -11,7 +11,6 @@ module "ec2_instance_t3" {
   subnet_id                            = local.public_subnets
   ebs_optimized                        = true
   create_ec2_kms_key                   = true
-  associate_public_ip_address          = true
   monitoring                           = true
   source_dest_check                    = false
   enclave_options_enabled              = false
@@ -25,5 +24,15 @@ module "ec2_instance_t3" {
     http_tokens                 = "required"
     http_put_response_hop_limit = 15
   }
+
+  root_block_device = [
+    {
+      volume_size           = 15
+      volume_type           = "gp3"
+      delete_on_termination = true
+      encrypted             = true
+      iops                  = 300
+    }
+  ]
   tags = local.tags
 }

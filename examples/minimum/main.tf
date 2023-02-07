@@ -2,8 +2,7 @@
 # This example shows the minimum values to use this module
 ##############################################################
 module "ec2_instance_minimum" {
-  source = "../../"
-  #checkov:skip=CKV_AWS_126:Ensure that detailed monitoring is enabled for EC2 instances
+  source            = "../../"
   name              = local.name
   ami               = data.aws_ami.amazon_linux.id
   instance_type     = "t3.small"
@@ -13,4 +12,10 @@ module "ec2_instance_minimum" {
   availability_zone = local.azs
   subnet_id         = local.public_subnets
   tags              = local.tags
+  root_block_device = [
+    {
+      volume_size = 15
+      encrypted   = true
+    }
+  ]
 }
