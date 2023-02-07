@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Feature: Add Operating System flexibility in script (i.e download/install packages depending on OS flavor)
 - Feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
 - Feat: use vpc version to 3.0.2 in supporting resources
+- fix: Ensure packages are installed without public IP
 
 ##  [1.2.1] - 2023-02-03
 ### Changes
