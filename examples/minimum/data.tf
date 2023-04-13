@@ -8,21 +8,21 @@ data "aws_ami" "amazon_linux" {
   }
 }
 
-data "aws_subnets" "public" {
+data "aws_subnets" "private" {
   filter {
     name   = "tag:Name"
-    values = ["${local.supporting_resources_name}*.pub.*"]
+    values = ["${var.supporting_resources_name}*.pri.*"]
   }
 }
 
 data "aws_vpc" "supporting" {
   filter {
     name   = "tag:Name"
-    values = [local.supporting_resources_name]
+    values = [var.supporting_resources_name]
   }
 }
 
-data "aws_subnet" "public" {
-  for_each = toset(data.aws_subnets.public.ids)
+data "aws_subnet" "private" {
+  for_each = toset(data.aws_subnets.private.ids)
   id       = each.value
 }

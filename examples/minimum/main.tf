@@ -3,19 +3,14 @@
 ##############################################################
 module "ec2_instance_minimum" {
   source            = "../../"
-  name              = local.name
+  name              = var.name
   ami               = data.aws_ami.amazon_linux.id
-  instance_type     = "t3.small"
-  monitoring        = true
-  ebs_optimized     = true
+  instance_type     = var.instance_type
+  monitoring        = var.monitoring
+  ebs_optimized     = var.ebs_optimized
   vpc_id            = local.vpc_id
   availability_zone = local.azs
-  subnet_id         = local.public_subnets
-  tags              = local.tags
-  root_block_device = [
-    {
-      volume_size = 15
-      encrypted   = true
-    }
-  ]
+  subnet_id         = local.private_subnets
+  tags              = merge({ Name = var.name }, var.tags)
+  root_block_device = var.root_block_device
 }

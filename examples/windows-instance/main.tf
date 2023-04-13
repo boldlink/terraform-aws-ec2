@@ -1,38 +1,22 @@
 module "ec2_instance_windows" {
   source                               = "../../"
-  name                                 = local.name
+  name                                 = var.name
   ami                                  = data.aws_ami.windows.id
-  instance_type                        = "t3.medium"
-  create_ec2_kms_key                   = true
-  ebs_optimized                        = true
+  instance_type                        = var.instance_type
+  create_ec2_kms_key                   = var.create_ec2_kms_key
+  ebs_optimized                        = var.ebs_optimized
   vpc_id                               = local.vpc_id
   availability_zone                    = local.azs
-  subnet_id                            = local.public_subnets
-  create_key_pair                      = true
-  get_password_data                    = true
-  tenancy                              = "default"
-  instance_initiated_shutdown_behavior = "terminate"
-  monitoring                           = true
-
-  metadata_options = {
-    http_endpoint               = "enabled"
-    http_tokens                 = "required"
-    http_put_response_hop_limit = 8
-  }
-
+  subnet_id                            = local.private_subnets
+  create_key_pair                      = var.create_key_pair
+  get_password_data                    = var.get_password_data
+  tenancy                              = var.tenancy
+  instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
+  monitoring                           = var.monitoring
+  metadata_options                     = var.metadata_options
   capacity_reservation_specification = {
-    capacity_reservation_preference = "open"
+    capacity_reservation_preference = var.capacity_reservation_preference
   }
-
-  root_block_device = [
-    {
-      volume_size           = 30
-      volume_type           = "gp3"
-      delete_on_termination = true
-      iops                  = 300
-      encrypted             = true
-    }
-  ]
-
-  tags = local.tags
+  root_block_device = var.root_block_device
+  tags              = merge({ Name = var.name }, var.tags)
 }

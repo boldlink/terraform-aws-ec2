@@ -3,36 +3,22 @@
 ######################################################################################################################################
 module "ec2_instance_t3" {
   source                               = "../../"
-  name                                 = local.name
+  name                                 = var.name
   ami                                  = data.aws_ami.amazon_linux.id
-  instance_type                        = "t3.large"
+  instance_type                        = var.instance_type
   vpc_id                               = local.vpc_id
   availability_zone                    = local.azs
-  subnet_id                            = local.public_subnets
-  ebs_optimized                        = true
-  create_ec2_kms_key                   = true
-  monitoring                           = true
-  source_dest_check                    = false
-  enclave_options_enabled              = false
-  tenancy                              = "default"
-  cpu_credits                          = "unlimited"
-  cpu_core_count                       = 1
-  cpu_threads_per_core                 = 2
-  instance_initiated_shutdown_behavior = "terminate"
-  metadata_options = {
-    http_endpoint               = "enabled"
-    http_tokens                 = "required"
-    http_put_response_hop_limit = 15
-  }
-
-  root_block_device = [
-    {
-      volume_size           = 15
-      volume_type           = "gp3"
-      delete_on_termination = true
-      encrypted             = true
-      iops                  = 300
-    }
-  ]
-  tags = local.tags
+  subnet_id                            = local.private_subnets
+  ebs_optimized                        = var.ebs_optimized
+  create_ec2_kms_key                   = var.create_ec2_kms_key
+  monitoring                           = var.monitoring
+  source_dest_check                    = var.source_dest_check
+  tenancy                              = var.tenancy
+  cpu_credits                          = var.cpu_credits
+  cpu_core_count                       = var.cpu_core_count
+  cpu_threads_per_core                 = var.cpu_threads_per_core
+  instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
+  metadata_options                     = var.metadata_options
+  root_block_device                    = var.root_block_device
+  tags                                 = merge({ Name = var.name }, var.tags)
 }
