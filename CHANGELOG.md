@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 - fix: CKV2_AWS_57: "Ensure Secrets Manager secrets should have automatic rotation enabled"
 - updated supporting resource VPC to version 3.0.3
+- Moved static values to variables.tf file
 
 ##  [1.2.1] - 2023-02-03
 ### Changes
