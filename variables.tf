@@ -246,7 +246,7 @@ variable "extra_script" {
 
 ## Tags
 variable "tags" {
-  description = "For adding values for tags"
+  description = "Map of tags to assign to the resource. Note that these tags apply to the instance and not block storage devices."
   type        = map(string)
   default     = {}
 }

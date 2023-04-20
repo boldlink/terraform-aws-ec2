@@ -77,6 +77,7 @@ resource "aws_key_pair" "main" {
 ## Store private key pem to AWS Secrets Manager
 ################################################
 resource "aws_secretsmanager_secret" "main" {
+  #checkov:skip=CKV2_AWS_57: "Ensure Secrets Manager secrets should have automatic rotation enabled"
   count                   = var.create_key_pair ? 1 : 0
   name                    = var.name
   recovery_window_in_days = var.recovery_window_in_days

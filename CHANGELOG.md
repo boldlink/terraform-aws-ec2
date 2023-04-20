@@ -6,11 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- fix: CKV_AWS_79  Ensure Instance Metadata Service Version 1 is not enabled:: V1 is used for the examples
 - Feature: Add Operating System flexibility in script (i.e download/install packages depending on OS flavor)
 - Feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
-- Feat: use vpc version to 3.0.2 in supporting resources
 - fix: Ensure packages are installed without public IP
+
+##  [1.2.2] - 2023-04-13
+### Changes
+- fix: CKV2_AWS_57: "Ensure Secrets Manager secrets should have automatic rotation enabled"
+- updated supporting resource VPC to version 3.0.3
+- Moved static values to variables.tf file
 
 ##  [1.2.1] - 2023-02-03
 ### Changes
@@ -86,7 +90,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2022-02-17
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.2.1...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.2.2...HEAD
+[1.2.2]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.2
 [1.2.1]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.1
 [1.2.0]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.0
 [1.1.9]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.1.9
