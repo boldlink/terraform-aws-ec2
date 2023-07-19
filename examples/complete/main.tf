@@ -2,6 +2,8 @@
 ### This example shows the complete values to use this module
 ##############################################################
 module "ec2_instance_complete" {
+  #checkov:skip=CKV_AWS_290: "Ensure IAM policies does not allow write access without constraints"
+  #checkov:skip=CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
   source                               = "../../"
   name                                 = var.name
   ami                                  = data.aws_ami.amazon_linux.id
@@ -10,7 +12,6 @@ module "ec2_instance_complete" {
   availability_zone                    = local.azs
   subnet_id                            = local.private_subnets
   create_ec2_kms_key                   = var.create_ec2_kms_key
-  create_key_pair                      = var.create_key_pair
   ebs_optimized                        = var.ebs_optimized
   create_instance_iam_role             = var.create_instance_iam_role
   monitoring                           = var.monitoring

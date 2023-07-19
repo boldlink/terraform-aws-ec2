@@ -9,12 +9,6 @@ variable "ami" {
   type        = string
 }
 
-variable "recovery_window_in_days" {
-  type        = number
-  description = "(Optional) Number of days that AWS Secrets Manager waits before it can delete the secret. This value can be 0 to force deletion without recovery or range from 7 to 30 days."
-  default     = 0
-}
-
 variable "associate_public_ip_address" {
   description = "Whether to associate a public IP address with an instance in a VPC."
   type        = bool
@@ -129,12 +123,6 @@ variable "ipv6_addresses" {
   default     = null
 }
 
-variable "key_name" {
-  description = "Key name of the Key Pair to use for the instance; which can be managed using the `aws_key_pair` resource"
-  type        = string
-  default     = null
-}
-
 variable "launch_template" {
   description = "Specifies a Launch Template to configure the instance. Parameters configured on this resource will override the corresponding parameters in the Launch Template"
   type        = map(string)
@@ -226,6 +214,12 @@ variable "user_data" {
   default     = null
 }
 
+variable "install_ssm_agent" {
+  type        = bool
+  description = "Whether to install ssm agent"
+  default     = true
+}
+
 variable "user_data_base64" {
   description = "Can be used instead of user_data to pass base64-encoded binary data directly. Use this instead of user_data whenever the value is not a valid UTF-8 string. For example, gzip-encoded user data must be base64-encoded and passed via this argument to avoid corruption."
   type        = string
@@ -275,16 +269,10 @@ variable "security_group_ingress" {
   default     = {}
 }
 
-variable "create_key_pair" {
-  description = "Choose whether to create key pair"
-  type        = bool
-  default     = false
-}
-
 variable "create_instance_iam_role" {
   description = "Choose whether to create iam instance role"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "use_ebs_default_kms" {

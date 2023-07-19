@@ -19,13 +19,13 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.11 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.20.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.63.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0.0 |
 
 ## Modules
 
@@ -49,7 +49,6 @@
 | <a name="input_capacity_reservation_preference"></a> [capacity\_reservation\_preference](#input\_capacity\_reservation\_preference) | Indicates the instance's Capacity Reservation preferences. Can be 'open' or 'none'. (Default: 'open') | `string` | `"open"` | no |
 | <a name="input_create_ec2_kms_key"></a> [create\_ec2\_kms\_key](#input\_create\_ec2\_kms\_key) | Choose whether to create kms key for ebs encryption | `bool` | `true` | no |
 | <a name="input_create_instance_iam_role"></a> [create\_instance\_iam\_role](#input\_create\_instance\_iam\_role) | Choose whether to create iam instance role | `bool` | `true` | no |
-| <a name="input_create_key_pair"></a> [create\_key\_pair](#input\_create\_key\_pair) | Choose whether to create key pair | `bool` | `true` | no |
 | <a name="input_ebs_block_device"></a> [ebs\_block\_device](#input\_ebs\_block\_device) | One or more configuration blocks with additional EBS block devices to attach to the instance. Block device configurations only apply on resource creation. | `list(any)` | <pre>[<br>  {<br>    "delete_on_termination": true,<br>    "device_name": "/dev/sdg",<br>    "encrypted": true,<br>    "volume_size": 15,<br>    "volume_type": "gp2"<br>  }<br>]</pre> | no |
 | <a name="input_ebs_optimized"></a> [ebs\_optimized](#input\_ebs\_optimized) | If true, the launched EC2 instance will be EBS-optimized | `bool` | `true` | no |
 | <a name="input_ephemeral_block_device"></a> [ephemeral\_block\_device](#input\_ephemeral\_block\_device) | Customize Ephemeral (also known as Instance Store) volumes on the instance | `list(map(string))` | <pre>[<br>  {<br>    "device_name": "/dev/sdh",<br>    "virtual_name": "ephemeral0"<br>  }<br>]</pre> | no |

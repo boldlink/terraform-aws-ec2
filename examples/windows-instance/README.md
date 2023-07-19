@@ -19,13 +19,13 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.14.11 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.20.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.0.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.63.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.0.0 |
 
 ## Modules
 
@@ -48,7 +48,6 @@
 |------|-------------|------|---------|:--------:|
 | <a name="input_capacity_reservation_preference"></a> [capacity\_reservation\_preference](#input\_capacity\_reservation\_preference) | Indicates the instance's Capacity Reservation preferences. Can be 'open' or 'none'. (Default: 'open') | `string` | `"open"` | no |
 | <a name="input_create_ec2_kms_key"></a> [create\_ec2\_kms\_key](#input\_create\_ec2\_kms\_key) | Choose whether to create kms key for ebs encryption | `bool` | `true` | no |
-| <a name="input_create_key_pair"></a> [create\_key\_pair](#input\_create\_key\_pair) | Choose whether to create key pair | `bool` | `true` | no |
 | <a name="input_ebs_optimized"></a> [ebs\_optimized](#input\_ebs\_optimized) | If true, the launched EC2 instance will be EBS-optimized | `bool` | `true` | no |
 | <a name="input_get_password_data"></a> [get\_password\_data](#input\_get\_password\_data) | If true, wait for password data to become available and retrieve it.  Useful for getting the administrator password for instances running Microsoft Windows. | `bool` | `true` | no |
 | <a name="input_instance_initiated_shutdown_behavior"></a> [instance\_initiated\_shutdown\_behavior](#input\_instance\_initiated\_shutdown\_behavior) | Shutdown behavior for the instance. Amazon defaults this to stop for EBS-backed instances and terminate for instance-store instances. Cannot be set on instance-store instance | `string` | `"terminate"` | no |

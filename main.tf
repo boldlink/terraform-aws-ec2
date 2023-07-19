@@ -57,44 +57,6 @@ resource "aws_security_group" "main" {
   }
 }
 
-##################################################
-### Key pair (as optional)
-##################################################
-resource "tls_private_key" "main" {
-  count     = var.create_key_pair ? 1 : 0
-  algorithm = "RSA"
-  rsa_bits  = 4096
-}
-
-resource "aws_key_pair" "main" {
-  count      = var.create_key_pair ? 1 : 0
-  key_name   = "${var.name}-keypair"
-  public_key = tls_private_key.main[0].public_key_openssh
-  tags       = var.tags
-}
-
-################################################
-## Store private key pem to AWS Secrets Manager
-################################################
-resource "aws_secretsmanager_secret" "main" {
-  #checkov:skip=CKV2_AWS_57: "Ensure Secrets Manager secrets should have automatic rotation enabled"
-  count                   = var.create_key_pair ? 1 : 0
-  name                    = var.name
-  recovery_window_in_days = var.recovery_window_in_days
-  description             = "Private key pem for connecting to the ${var.name} instances"
-  kms_key_id              = var.kms_key_id == null ? join("", aws_kms_key.main.*.arn) : var.kms_key_id
-  tags                    = var.tags
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-resource "aws_secretsmanager_secret_version" "main" {
-  count         = var.create_key_pair ? 1 : 0
-  secret_id     = aws_secretsmanager_secret.main[0].id
-  secret_string = tls_private_key.main[0].private_key_pem
-}
 
 ##################################################
 ### IAM Profile
@@ -136,6 +98,13 @@ resource "aws_iam_role_policy_attachment" "cloudwatchagentserverpolicy" {
   role       = join("", aws_iam_role.main.*.name)
 }
 
+## Managed Policy to allow ssm agent to communicate with SSM Manager
+resource "aws_iam_role_policy_attachment" "ssm" {
+  count      = var.create_instance_iam_role ? 1 : 0
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  role       = join("", aws_iam_role.main.*.name)
+}
+
 ## Configure CloudWatch agent to set the retention policy for log groups that it sends log events to.
 resource "aws_iam_role_policy" "logs_policy" {
   count = var.create_instance_iam_role && var.monitoring ? 1 : 0
@@ -166,13 +135,13 @@ resource "aws_instance" "main" {
   availability_zone                    = var.availability_zone
   ebs_optimized                        = var.ebs_optimized
   disable_api_termination              = var.disable_api_termination
-  key_name                             = var.create_key_pair ? aws_key_pair.main[0].key_name : var.key_name
   monitoring                           = var.monitoring
   vpc_security_group_ids               = [aws_security_group.main.id]
   source_dest_check                    = var.source_dest_check
-  user_data                            = var.monitoring ? base64encode(data.template_cloudinit_config.config.rendered) : var.user_data
+  user_data                            = var.monitoring ? base64encode(data.template_cloudinit_config.config.rendered) : (var.install_ssm_agent ? base64encode(data.template_cloudinit_config.ssm.rendered) : var.user_data)
   user_data_base64                     = var.user_data_base64
   subnet_id                            = var.subnet_id
+  get_password_data                    = var.get_password_data
   associate_public_ip_address          = var.associate_public_ip_address
   placement_group                      = var.placement_group
   placement_partition_number           = var.placement_partition_number
@@ -181,7 +150,6 @@ resource "aws_instance" "main" {
   tenancy                              = var.tenancy
   cpu_core_count                       = var.cpu_core_count
   cpu_threads_per_core                 = var.cpu_threads_per_core
-  get_password_data                    = var.create_key_pair ? var.get_password_data : null
   hibernation                          = var.hibernation
   host_id                              = var.host_id
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior

@@ -52,3 +52,19 @@ data "template_cloudinit_config" "config" {
     content      = var.extra_script
   }
 }
+
+data "template_cloudinit_config" "ssm" {
+  gzip          = false
+  base64_encode = true
+
+  # Base Userdata
+  # SSM config
+  part {
+    content_type = "text/x-shellscript"
+    content = templatefile("${path.module}/scripts/ssm_install.sh",
+      {
+        debug = var.debug_script,
+      }
+    )
+  }
+}

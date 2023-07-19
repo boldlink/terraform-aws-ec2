@@ -22,12 +22,6 @@ variable "create_ec2_kms_key" {
   default     = true
 }
 
-variable "create_key_pair" {
-  description = "Choose whether to create key pair"
-  type        = bool
-  default     = true
-}
-
 variable "ebs_optimized" {
   description = "If true, the launched EC2 instance will be EBS-optimized"
   type        = bool

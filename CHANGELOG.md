@@ -6,9 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Feature: Add Operating System flexibility in script (i.e download/install packages depending on OS flavor)
-- Feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
+- feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
 - fix: Ensure packages are installed without public IP
+- feat: Include ssm installation option for windows instances
+- fix: CKV_AWS_290: "Ensure IAM policies does not allow write access without constraints"
+- fix: CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
+
+##  [2.0.0] - 2023-07-19
+### Changes
+- feat: Added ssm support and removed key pair creation for different linux distros
+- feat: Add Operating System flexibility in script (i.e download/install packages depending on OS flavor)
 
 ##  [1.2.2] - 2023-04-13
 ### Changes

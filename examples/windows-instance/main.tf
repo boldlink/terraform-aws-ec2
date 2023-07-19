@@ -8,7 +8,6 @@ module "ec2_instance_windows" {
   vpc_id                               = local.vpc_id
   availability_zone                    = local.azs
   subnet_id                            = local.private_subnets
-  create_key_pair                      = var.create_key_pair
   get_password_data                    = var.get_password_data
   tenancy                              = var.tenancy
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
