@@ -138,7 +138,7 @@ resource "aws_instance" "main" {
   monitoring                           = var.monitoring
   vpc_security_group_ids               = [aws_security_group.main.id]
   source_dest_check                    = var.source_dest_check
-  user_data                            = var.monitoring ? base64encode(data.template_cloudinit_config.config.rendered) : (var.install_ssm_agent ? base64encode(data.template_cloudinit_config.ssm.rendered) : var.user_data)
+  user_data                            = var.monitoring ? base64gzip(base64encode(data.template_cloudinit_config.config.rendered)) : (var.install_ssm_agent ? base64gzip(base64encode(data.template_cloudinit_config.ssm.rendered)) : var.user_data)
   user_data_base64                     = var.user_data_base64
   subnet_id                            = var.subnet_id
   get_password_data                    = var.get_password_data
@@ -148,8 +148,6 @@ resource "aws_instance" "main" {
   private_ip                           = var.private_ip
   secondary_private_ips                = var.secondary_private_ips
   tenancy                              = var.tenancy
-  cpu_core_count                       = var.cpu_core_count
-  cpu_threads_per_core                 = var.cpu_threads_per_core
   hibernation                          = var.hibernation
   host_id                              = var.host_id
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
@@ -157,6 +155,15 @@ resource "aws_instance" "main" {
   ipv6_addresses                       = var.ipv6_addresses
   enclave_options {
     enabled = var.enclave_options_enabled
+  }
+
+  dynamic "cpu_options" {
+    for_each = length(keys(var.cpu_options)) > 0 ? [var.cpu_options] : []
+    content {
+      amd_sev_snp      = try(cpu_options.value.amd_sev_snp, null)
+      core_count       = try(cpu_options.value.core_count, null)
+      threads_per_core = try(cpu_options.value.threads_per_core, null)
+    }
   }
 
   credit_specification {
