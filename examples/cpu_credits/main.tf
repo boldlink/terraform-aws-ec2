@@ -15,10 +15,13 @@ module "ec2_instance_t3" {
   source_dest_check                    = var.source_dest_check
   tenancy                              = var.tenancy
   cpu_credits                          = var.cpu_credits
-  cpu_core_count                       = var.cpu_core_count
-  cpu_threads_per_core                 = var.cpu_threads_per_core
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
   metadata_options                     = var.metadata_options
   root_block_device                    = var.root_block_device
   tags                                 = merge({ Name = var.name }, var.tags)
+
+  cpu_options = {
+    core_count       = var.cpu_core_count
+    threads_per_core = var.cpu_threads_per_core
+  }
 }

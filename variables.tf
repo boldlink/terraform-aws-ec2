@@ -27,16 +27,10 @@ variable "capacity_reservation_specification" {
   default     = null
 }
 
-variable "cpu_core_count" {
-  description = "Sets the number of CPU cores for an instance." # This option is only supported on creation of instance type that support CPU Options https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-optimize-cpu.html#cpu-options-supported-instances-values
-  type        = number
-  default     = null
-}
-
-variable "cpu_threads_per_core" {
-  description = "Sets the number of CPU threads per core for an instance (has no effect unless cpu_core_count is also set)."
-  type        = number
-  default     = null
+variable "cpu_options" {
+  description = " The CPU options for the instance. Applies to the instance at launch time."
+  type        = map(string)
+  default     = {}
 }
 
 variable "cpu_credits" {
