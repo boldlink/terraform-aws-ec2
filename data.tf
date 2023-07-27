@@ -54,7 +54,7 @@ data "template_cloudinit_config" "config" {
 }
 
 data "template_cloudinit_config" "ssm" {
-  gzip          = false
+  gzip          = true
   base64_encode = true
 
   # Base Userdata

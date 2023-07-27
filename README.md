@@ -24,10 +24,20 @@ This terraform module creates an EC2 Instance with a security group, Cloudwatch 
 
 Examples available [here](./examples/)
 
+## Connecting to the Instance
+- This module does not include a feature to create and use a key pair. As of this release this is only supported for linux instances
+- Use SSM Manager to connect to the instance. The module includes a feature to add the necessary permissions for the instance to communicate with systems manager.
+
+## Launching in Private Subnets without NAT Gateways or internet connection
+To connect and manage instances in isolated subnets without internet connectivity, you need to enable VPC endpoints for specific services such as
+- `com.amazonaws.[region].ssm`
+- `com.amazonaws.[region].ec2messages`
+- `com.amazonaws.[region].ssmmessages`
+- `(optional) com.amazonaws.[region].kms for KMS encryption in Session Manager`
+
 ## Usage
 **Things to note**:
 - These examples use the latest version of this module
-- This module does not include a feature to create and use a key pair
 
 ```hcl
 module "ec2_instance_minimum" {
@@ -61,7 +71,7 @@ module "ec2_instance_minimum" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.8.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.9.0 |
 | <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
 
 ## Modules
@@ -112,7 +122,6 @@ No modules.
 | <a name="input_enclave_options_enabled"></a> [enclave\_options\_enabled](#input\_enclave\_options\_enabled) | Whether Nitro Enclaves will be enabled on the instance. Defaults to `false` | `bool` | `false` | no |
 | <a name="input_ephemeral_block_device"></a> [ephemeral\_block\_device](#input\_ephemeral\_block\_device) | Customize Ephemeral (also known as Instance Store) volumes on the instance | `list(map(string))` | `[]` | no |
 | <a name="input_extra_script"></a> [extra\_script](#input\_extra\_script) | Name of the extra script | `string` | `""` | no |
-| <a name="input_get_password_data"></a> [get\_password\_data](#input\_get\_password\_data) | If true, wait for password data to become available and retrieve it.  Useful for getting the administrator password for instances running Microsoft Windows. | `bool` | `null` | no |
 | <a name="input_hibernation"></a> [hibernation](#input\_hibernation) | If true, the launched EC2 instance will support hibernation | `bool` | `null` | no |
 | <a name="input_host_id"></a> [host\_id](#input\_host\_id) | ID of a dedicated host that the instance will be assigned to. Use when an instance is to be launched on a specific dedicated host | `string` | `null` | no |
 | <a name="input_iam_instance_profile"></a> [iam\_instance\_profile](#input\_iam\_instance\_profile) | IAM Instance Profile to launch the instance with. Specified as the name of the Instance Profile | `string` | `null` | no |

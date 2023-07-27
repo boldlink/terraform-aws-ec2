@@ -28,12 +28,6 @@ variable "ebs_optimized" {
   default     = true
 }
 
-variable "get_password_data" {
-  description = "If true, wait for password data to become available and retrieve it.  Useful for getting the administrator password for instances running Microsoft Windows."
-  type        = bool
-  default     = true
-}
-
 variable "tenancy" {
   description = "The tenancy of the instance (if the instance is running in a VPC). Available values: default, dedicated, host."
   type        = string

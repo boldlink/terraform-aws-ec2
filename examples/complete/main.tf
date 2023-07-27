@@ -6,7 +6,7 @@ module "ec2_instance_complete" {
   #checkov:skip=CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
   source                               = "../../"
   name                                 = var.name
-  ami                                  = data.aws_ami.amazon_linux.id
+  ami                                  = data.aws_ami.ubuntu.id
   instance_type                        = var.instance_type
   vpc_id                               = local.vpc_id
   availability_zone                    = local.azs
@@ -28,14 +28,4 @@ module "ec2_instance_complete" {
   }
   timeouts = var.timeouts
   tags     = merge({ Name = var.name }, var.tags)
-
-  security_group_ingress = [
-    {
-      description = "inbound ssh traffic"
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = [local.vpc_cidr]
-    }
-  ]
 }

@@ -69,12 +69,6 @@ variable "ephemeral_block_device" {
   default     = []
 }
 
-variable "get_password_data" {
-  description = "If true, wait for password data to become available and retrieve it.  Useful for getting the administrator password for instances running Microsoft Windows."
-  type        = bool
-  default     = null
-}
-
 variable "hibernation" {
   description = "If true, the launched EC2 instance will support hibernation"
   type        = bool
