@@ -135,10 +135,11 @@ resource "aws_instance" "main" {
   availability_zone                    = var.availability_zone
   ebs_optimized                        = var.ebs_optimized
   disable_api_termination              = var.disable_api_termination
+  key_name                             = var.key_name
   monitoring                           = var.monitoring
   vpc_security_group_ids               = [aws_security_group.main.id]
   source_dest_check                    = var.source_dest_check
-  user_data                            = var.monitoring && var.install_ssm_agent ? data.template_cloudinit_config.config.rendered : (var.install_ssm_agent && var.monitoring == false ? data.template_cloudinit_config.ssm.rendered : var.user_data)
+  user_data                            = var.install_ssm_agent ? data.template_cloudinit_config.config.rendered : var.user_data
   user_data_base64                     = var.user_data_base64
   subnet_id                            = var.subnet_id
   associate_public_ip_address          = var.associate_public_ip_address
@@ -147,6 +148,7 @@ resource "aws_instance" "main" {
   private_ip                           = var.private_ip
   secondary_private_ips                = var.secondary_private_ips
   tenancy                              = var.tenancy
+  get_password_data                    = var.get_password_data
   hibernation                          = var.hibernation
   host_id                              = var.host_id
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior

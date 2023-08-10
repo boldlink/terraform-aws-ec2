@@ -69,6 +69,12 @@ variable "ephemeral_block_device" {
   default     = []
 }
 
+variable "get_password_data" {
+  description = "If true, wait for password data to become available and retrieve it.  Useful for getting the administrator password for instances running Microsoft Windows."
+  type        = bool
+  default     = null
+}
+
 variable "hibernation" {
   description = "If true, the launched EC2 instance will support hibernation"
   type        = bool
@@ -108,6 +114,12 @@ variable "ipv6_address_count" {
 variable "ipv6_addresses" {
   description = "Specify one or more IPv6 addresses from the range of the subnet to associate with the primary network interface"
   type        = list(string)
+  default     = null
+}
+
+variable "key_name" {
+  description = "Key name of the Key Pair to use for the instance; which can be managed using the `aws_key_pair` resource"
+  type        = string
   default     = null
 }
 
@@ -212,18 +224,6 @@ variable "user_data_base64" {
   description = "Can be used instead of user_data to pass base64-encoded binary data directly. Use this instead of user_data whenever the value is not a valid UTF-8 string. For example, gzip-encoded user data must be base64-encoded and passed via this argument to avoid corruption."
   type        = string
   default     = null
-}
-
-variable "debug_script" {
-  type        = string
-  description = "Enable set -x option for userdatam use 'off' or 'on' as values"
-  default     = "off"
-}
-
-variable "extra_script" {
-  type        = string
-  description = "Name of the extra script"
-  default     = ""
 }
 
 ## Tags
