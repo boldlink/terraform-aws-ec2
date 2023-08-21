@@ -21,7 +21,7 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-    uses: boldlink/terraform-module-support/.github/workflows/module-examples-tests.yaml@main
+    uses: boldlink/terraform-module-support/.github/workflows/module-examples-tests.yaml@fix/module-examples-tests
     secrets:
       AUTOMATION_TOKEN: ${{ secrets.AUTOMATION_TOKEN }}
       SLACK_WEBHOOK : ${{secrets.SLACK_WEBHOOK}}
