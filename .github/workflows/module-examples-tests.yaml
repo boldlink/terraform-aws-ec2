@@ -4,15 +4,15 @@ on:
 
   pull_request_review:
     types: [submitted]
-    paths:
-      - '**.tf'
+#    paths:
+#      - '**.tf'
 
   pull_request:
     types:
       - "opened"
       - "synchronize"
-    paths:
-      - '**.tf'
+#    paths:
+#      - '**.tf'
 
 permissions: read-all
 
