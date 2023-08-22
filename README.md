@@ -26,16 +26,76 @@ This terraform module creates an EC2 Instance with a security group, Cloudwatch 
 
 Examples available [here](./examples/)
 
-## Connecting to the Instance
-- This module does not include a feature to create and use a key pair. As of this release this is only supported for linux instances
-- Use SSM Manager to connect to the instance. The module includes a feature to add the necessary permissions for the instance to communicate with systems manager.
--
+## Connecting to Instances
+- The module includes a feature to add the necessary permissions for the instance to communicate with systems manager.
+- This module does not include a feature to create and use a key pair.
+- Use SSM Manager to connect to the instance.
+- Most recent Windows AMIs come with SSM agent pre-installed. The windows AMI used in the examples is `Windows_Server-2019-English-Full-Base`
+
+### Using AWS Systems Manager Console Session Manager
+- Go to the Systems Manager Console and click on `Session Manager` in the left-side pane.
+- Within this section, ensure you have selected the first tab named `Sessions` and then click the `Start Session` button.
+- Choose the target instance to which you want to connect. Optionally, you can provide a reason for the connection.
+- Click on `Start Session`.
+- You will now be successfully connected to the instance, establishing a shell session for Linux instances or a PowerShell session for Windows instances.
+
+### [Windows Users](https://awscloudsecvirtualevent.com/workshops/module1/rdp/)
+
+#### Create a Windows OS user
+1. Navigate to the Session Manager console under Instances & Nodes in the AWS Systems Manager navigation menu, and initiate a session to the Windows instance managed by SSM.
+
+2. Execute the following commands to create a new user:
+
+- Input a secure string password. Use the command below, which will prompt you for a password. Type a strong password and press enter:
+```console
+$Password = Read-Host -AsSecureString
+```
+- Create a local user:
+```console
+New-LocalUser "<username_here>" -Password $Password
+```
+- Add the user to the Remote Desktop Users group:
+```console
+Add-LocalGroupMember -Group "Remote Desktop Users" -Member "<username_here>"
+```
+Replace `<username_here>` with your desired username.
+
+3. Click `Terminate` to end the session or type "exit" and select "close."
+
+### RDP to EC2 Instance:
+#### Using AWS Systems Manager Console Fleet Manager
+- Access the Systems Manager Console and click on `Fleet Manager` in the left-side pane.
+- Within Managed Nodes, select the specific instance you wish to connect to.
+- Click on the dropdown for `Node Actions` on the right-hand side, and from the options, choose `Connect` and then select `Connect with Remote Desktop`.
+- For authentication, use the credentials created in the previous step.
+
+#### Using AWS CLI and RDP Client
+- Make sure you have the Session Manager plugin installed on your system. For installation instructions, refer to the guide [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
+- Visit the EC2 Console and take note of the instance ID for the instance you intend to connect to.
+- Open a terminal on your local machine and enter the following command to initiate a session with the instance:
+```console
+aws ssm start-session --target <instance-id> --document-name AWS-StartPortForwardingSession --parameters "localPortNumber=55678,portNumber=3389"
+```
+**Note:** You can choose any value for `localPortNumber`.
+- You will see a confirmation that port 55678 has been opened for this session.
+- Launch the Microsoft Remote Desktop client and configure a new remote desktop session with the following details:
+```console
+PC Name/host: localhost:55678
+User Account: Provide user name and password created in earlier step
+Connection/Friendly Name (optional): Session Manager RDP
+```
+- Using the Microsoft Remote Desktop client, open the remote desktop connection for the Session Manager RDP configured earlier with `localhost:55678`. You should now be connected and able to work on the remote instance via RDP.
+
+- To end the session, press Control+C in the terminal.
+
 ## Launching in Private Subnets without NAT Gateways or internet connection
-To connect and manage instances in isolated subnets without internet connectivity, you need to enable VPC endpoints for specific services such as
+To manage instances in isolated subnets without internet connectivity, it is necessary to enable VPC endpoints for specific services, including:
 - `com.amazonaws.[region].ssm`
 - `com.amazonaws.[region].ec2messages`
 - `com.amazonaws.[region].ssmmessages`
 - `(optional) com.amazonaws.[region].kms for KMS encryption in Session Manager`
+
+Instructions for enabling these endpoints using boldlink terraform module can be found [here](https://github.com/boldlink/terraform-aws-vpc-endpoints/tree/main/examples)
 
 ## Usage
 **Things to note**:
@@ -121,7 +181,6 @@ No modules.
 | <a name="input_enable_key_rotation"></a> [enable\_key\_rotation](#input\_enable\_key\_rotation) | Choose whether to enable key rotation | `bool` | `true` | no |
 | <a name="input_enclave_options_enabled"></a> [enclave\_options\_enabled](#input\_enclave\_options\_enabled) | Whether Nitro Enclaves will be enabled on the instance. Defaults to `false` | `bool` | `false` | no |
 | <a name="input_ephemeral_block_device"></a> [ephemeral\_block\_device](#input\_ephemeral\_block\_device) | Customize Ephemeral (also known as Instance Store) volumes on the instance | `list(map(string))` | `[]` | no |
-| <a name="input_get_password_data"></a> [get\_password\_data](#input\_get\_password\_data) | If true, wait for password data to become available and retrieve it.  Useful for getting the administrator password for instances running Microsoft Windows. | `bool` | `null` | no |
 | <a name="input_hibernation"></a> [hibernation](#input\_hibernation) | If true, the launched EC2 instance will support hibernation | `bool` | `null` | no |
 | <a name="input_host_id"></a> [host\_id](#input\_host\_id) | ID of a dedicated host that the instance will be assigned to. Use when an instance is to be launched on a specific dedicated host | `string` | `null` | no |
 | <a name="input_iam_instance_profile"></a> [iam\_instance\_profile](#input\_iam\_instance\_profile) | IAM Instance Profile to launch the instance with. Specified as the name of the Instance Profile | `string` | `null` | no |
@@ -132,7 +191,6 @@ No modules.
 | <a name="input_ipv6_address_count"></a> [ipv6\_address\_count](#input\_ipv6\_address\_count) | A number of IPv6 addresses to associate with the primary network interface. Amazon EC2 chooses the IPv6 addresses from the range of your subnet | `number` | `null` | no |
 | <a name="input_ipv6_addresses"></a> [ipv6\_addresses](#input\_ipv6\_addresses) | Specify one or more IPv6 addresses from the range of the subnet to associate with the primary network interface | `list(string)` | `null` | no |
 | <a name="input_key_deletion_window_in_days"></a> [key\_deletion\_window\_in\_days](#input\_key\_deletion\_window\_in\_days) | The number of days before the key is deleted | `number` | `7` | no |
-| <a name="input_key_name"></a> [key\_name](#input\_key\_name) | Key name of the Key Pair to use for the instance; which can be managed using the `aws_key_pair` resource | `string` | `null` | no |
 | <a name="input_kms_key_id"></a> [kms\_key\_id](#input\_kms\_key\_id) | Amazon Resource Name (ARN) of the KMS Key to use when encrypting | `string` | `null` | no |
 | <a name="input_launch_template"></a> [launch\_template](#input\_launch\_template) | Specifies a Launch Template to configure the instance. Parameters configured on this resource will override the corresponding parameters in the Launch Template | `map(string)` | `null` | no |
 | <a name="input_metadata_options"></a> [metadata\_options](#input\_metadata\_options) | Customize the metadata options of the instance | `map(string)` | `{}` | no |
