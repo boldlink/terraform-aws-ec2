@@ -4,7 +4,7 @@ data "aws_ami" "amazon_linux" {
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-kernel-5.10-*-x86_64-gp2"]
+    values = ["amzn2-ami-kernel-5.10-*-${var.architecture}-gp2"]
   }
 }
 

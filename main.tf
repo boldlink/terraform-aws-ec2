@@ -99,7 +99,7 @@ resource "aws_iam_role_policy_attachment" "cloudwatchagentserverpolicy" {
 
 ## Managed Policy to allow ssm agent to communicate with SSM Manager
 resource "aws_iam_role_policy_attachment" "ssm" {
-  count      = var.create_instance_iam_role ? 1 : 0
+  count      = var.create_instance_iam_role && var.install_ssm_agent ? 1 : 0
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
   role       = join("", aws_iam_role.main.*.name)
 }

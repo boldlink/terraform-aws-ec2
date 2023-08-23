@@ -21,29 +21,33 @@ This terraform module creates an EC2 Instance with a security group, Cloudwatch 
 - Has elaborate examples that you can use to setup your ec2 instance within a very short time.
 - Ability to create associated ec2 resources with minimum configuration changes.
 - This module includes a feature to install ssm agent and gives the necessary permissions for the instance to communicate with SSM manager.
-- As of [2.0.0] we no longer support or enable SSH keys on the instances, this is aligned with AWS best practices. As an alternative you should use Session Mananger which providers support to login to the Ec2 Linux instance and port-forwarding.
+- As of [2.0.0] we no longer support or enable SSH keys on the instances, this is aligned with AWS best practices. As an alternative you should use Session Mananger which providers support to login to the Ec2 Linux and Windows (read below for instructions)
 
 
 Examples available [here](./examples/)
 
 ## Connecting to Instances
-- The module includes a feature to add the necessary permissions for the instance to communicate with systems manager.
-- This module does not include a feature to create and use a key pair.
-- Use SSM Manager to connect to the instance.
-- Most recent Windows AMIs come with SSM agent pre-installed. The windows AMI used in the examples is `Windows_Server-2019-English-Full-Base`
+- Use SSM Manager CLI to connect to instance Linux and Windows ec2 instances.
+- **Point to note:** Most recent Windows AMIs come with SSM agent pre-installed. The windows AMI used in the examples is `Windows_Server-2019-English-Full-Base`
 
-### Using AWS Systems Manager Console Session Manager
-- Go to the Systems Manager Console and click on `Session Manager` in the left-side pane.
-- Within this section, ensure you have selected the first tab named `Sessions` and then click the `Start Session` button.
-- Choose the target instance to which you want to connect. Optionally, you can provide a reason for the connection.
-- Click on `Start Session`.
-- You will now be successfully connected to the instance, establishing a shell session for Linux instances or a PowerShell session for Windows instances.
+### Using AWS CLI to start Systems Manager Session
+- Make sure you have the Session Manager plugin installed on your system. For installation instructions, refer to the guide [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
+- Run the following command to start session from your terminal
+```console
+aws ssm start-session \
+    --target "<instance_id>"
+```
+Replace `<instance_id>` with the ID of the instance you want to connect to
+
 
 ### [Windows Users](https://awscloudsecvirtualevent.com/workshops/module1/rdp/)
+- Windows instances can be connected through ssm by enabling port-forwarding of RDP 3389 port.
 
 #### Create a Windows OS user
-1. Navigate to the Session Manager console under Instances & Nodes in the AWS Systems Manager navigation menu, and initiate a session to the Windows instance managed by SSM.
-
+1. Start a session to the windows instance by running the cli command
+```console
+aws ssm start-session --target "<instance_id>"
+```
 2. Execute the following commands to create a new user:
 
 - Input a secure string password. Use the command below, which will prompt you for a password. Type a strong password and press enter:
@@ -61,13 +65,6 @@ Add-LocalGroupMember -Group "Remote Desktop Users" -Member "<username_here>"
 Replace `<username_here>` with your desired username.
 
 3. Click `Terminate` to end the session or type "exit" and select "close."
-
-### RDP to EC2 Instance:
-#### Using AWS Systems Manager Console Fleet Manager
-- Access the Systems Manager Console and click on `Fleet Manager` in the left-side pane.
-- Within Managed Nodes, select the specific instance you wish to connect to.
-- Click on the dropdown for `Node Actions` on the right-hand side, and from the options, choose `Connect` and then select `Connect with Remote Desktop`.
-- For authentication, use the credentials created in the previous step.
 
 #### Using AWS CLI and RDP Client
 - Make sure you have the Session Manager plugin installed on your system. For installation instructions, refer to the guide [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
@@ -95,7 +92,7 @@ To manage instances in isolated subnets without internet connectivity, it is nec
 - `com.amazonaws.[region].ssmmessages`
 - `(optional) com.amazonaws.[region].kms for KMS encryption in Session Manager`
 
-Instructions for enabling these endpoints using boldlink terraform module can be found [here](https://github.com/boldlink/terraform-aws-vpc-endpoints/tree/main/examples)
+You can use Boldlink VPC Endpoints Terraform module [here](https://github.com/boldlink/terraform-aws-vpc-endpoints/tree/main/examples)
 
 ## Usage
 **Things to note**:
