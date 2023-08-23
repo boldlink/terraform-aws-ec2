@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- feat: add cloud-init script for creating os users
+- feat: Separate the installation process of ssm agent and cloudwatch agent
 - feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
 - fix: Ensure packages are installed without public IP
 - feat: Include ssm installation option for windows instances
@@ -97,7 +99,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2022-02-17
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.2.2...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/2.0.0
 [1.2.2]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.2
 [1.2.1]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.1
 [1.2.0]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.0
