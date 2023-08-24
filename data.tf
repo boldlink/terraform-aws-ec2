@@ -39,4 +39,10 @@ data "template_cloudinit_config" "config" {
       log_group = join("", aws_cloudwatch_log_group.main.*.name)
     })
   }
+
+  # Additional script
+  part {
+    content_type = "text/x-shellscript"
+    content      = var.extra_script
+  }
 }

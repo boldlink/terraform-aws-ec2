@@ -6,7 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- feat: add cloud-init script for creating os users
+- feat: add cloud-init script for creating windows os SSM user when enabled.
+- feat: Allow the input of a custom awslogs.json configuration file on cwldata.sh installation`
+- feat: Add support for installation and configuration of cloudwatch agent on Windows instances, see doc [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-commandline-fleet.html).
+- feat: Implement least privilege principle for managed `AmazonSSMManagedInstanceCore` and other module IAM policies
 - feat: Separate the installation process of ssm agent and cloudwatch agent
 - feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
 - fix: Ensure packages are installed without public IP
@@ -18,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changes
 - feat: Added ssm support and removed key pair creation for different linux distros
 - feat: Add Operating System flexibility in script (i.e download/install packages depending on OS flavor)
+- feat: Updated module to use dynamic `cpu_options` block from the previous `cpu_core_count` and `cpu_threads_per_core` arguments which are now deprecated.
 
 ##  [1.2.2] - 2023-04-13
 ### Changes

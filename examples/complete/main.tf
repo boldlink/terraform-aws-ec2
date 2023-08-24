@@ -22,6 +22,7 @@ module "ec2_instance_complete" {
   root_block_device                    = var.root_block_device
   ebs_block_device                     = var.ebs_block_device
   ephemeral_block_device               = var.ephemeral_block_device
+  extra_script                         = templatefile("${path.module}/extra_script.sh", {})
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
   capacity_reservation_specification = {
     capacity_reservation_preference = var.capacity_reservation_preference

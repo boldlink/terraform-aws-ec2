@@ -22,13 +22,14 @@ This terraform module creates an EC2 Instance with a security group, Cloudwatch 
 - Ability to create associated ec2 resources with minimum configuration changes.
 - This module includes a feature to install ssm agent and gives the necessary permissions for the instance to communicate with SSM manager.
 - As of [2.0.0] we no longer support or enable SSH keys on the instances, this is aligned with AWS best practices. As an alternative you should use Session Mananger which providers support to login to the Ec2 Linux and Windows (read below for instructions)
+- This module has full support for Linux instances and partial support for Windows Instances (see changelog for Windows features unreleased).
 
 
 Examples available [here](./examples/)
 
 ## Connecting to Instances
 - Use SSM Manager CLI to connect to instance Linux and Windows ec2 instances.
-- **Point to note:** Most recent Windows AMIs come with SSM agent pre-installed. The windows AMI used in the examples is `Windows_Server-2019-English-Full-Base`
+- >**NOTE:** Most recent Windows AMIs come with SSM agent pre-installed. The windows AMI used in the examples is `Windows_Server-2019-English-Full-Base`
 
 ### Using AWS CLI to start Systems Manager Session
 - Make sure you have the Session Manager plugin installed on your system. For installation instructions, refer to the guide [here](https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager-working-with-install-plugin.html)
@@ -178,6 +179,7 @@ No modules.
 | <a name="input_enable_key_rotation"></a> [enable\_key\_rotation](#input\_enable\_key\_rotation) | Choose whether to enable key rotation | `bool` | `true` | no |
 | <a name="input_enclave_options_enabled"></a> [enclave\_options\_enabled](#input\_enclave\_options\_enabled) | Whether Nitro Enclaves will be enabled on the instance. Defaults to `false` | `bool` | `false` | no |
 | <a name="input_ephemeral_block_device"></a> [ephemeral\_block\_device](#input\_ephemeral\_block\_device) | Customize Ephemeral (also known as Instance Store) volumes on the instance | `list(map(string))` | `[]` | no |
+| <a name="input_extra_script"></a> [extra\_script](#input\_extra\_script) | Name of the extra script | `string` | `""` | no |
 | <a name="input_hibernation"></a> [hibernation](#input\_hibernation) | If true, the launched EC2 instance will support hibernation | `bool` | `null` | no |
 | <a name="input_host_id"></a> [host\_id](#input\_host\_id) | ID of a dedicated host that the instance will be assigned to. Use when an instance is to be launched on a specific dedicated host | `string` | `null` | no |
 | <a name="input_iam_instance_profile"></a> [iam\_instance\_profile](#input\_iam\_instance\_profile) | IAM Instance Profile to launch the instance with. Specified as the name of the Instance Profile | `string` | `null` | no |

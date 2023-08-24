@@ -214,6 +214,12 @@ variable "user_data_base64" {
   default     = null
 }
 
+variable "extra_script" {
+  type        = string
+  description = "Name of the extra script"
+  default     = ""
+}
+
 ## Tags
 variable "tags" {
   description = "Map of tags to assign to the resource. Note that these tags apply to the instance and not block storage devices."
