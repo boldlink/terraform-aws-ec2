@@ -6,9 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-- Feature: Add Operating System flexibility in script (i.e download/install packages depending on OS flavor)
-- Feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
+- feat: add cloud-init script for creating windows os SSM user when enabled.
+- feat: Allow the input of a custom awslogs.json configuration file on cwldata.sh installation`
+- feat: Add support for installation and configuration of cloudwatch agent on Windows instances, see doc [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-commandline-fleet.html).
+- feat: Implement least privilege principle for managed `AmazonSSMManagedInstanceCore` and other module IAM policies
+- feat: Separate the installation process of ssm agent and cloudwatch agent
+- feat: pair different subnet IDs with their corresponding CIDRs for consistency in examples usage
 - fix: Ensure packages are installed without public IP
+- feat: Include ssm installation option for windows instances
+- fix: CKV_AWS_290: "Ensure IAM policies does not allow write access without constraints"
+- fix: CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
+
+##  [2.0.0] - 2023-07-19
+### Changes
+- feat: Added ssm support and removed key pair creation for different linux distros
+- feat: Add Operating System flexibility in script (i.e download/install packages depending on OS flavor)
+- feat: Updated module to use dynamic `cpu_options` block from the previous `cpu_core_count` and `cpu_threads_per_core` arguments which are now deprecated.
 
 ##  [1.2.2] - 2023-04-13
 ### Changes
@@ -90,7 +103,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2022-02-17
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/1.2.2...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/2.0.0...HEAD
+[2.0.0]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/2.0.0
 [1.2.2]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.2
 [1.2.1]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.1
 [1.2.0]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.0

@@ -9,12 +9,6 @@ variable "ami" {
   type        = string
 }
 
-variable "recovery_window_in_days" {
-  type        = number
-  description = "(Optional) Number of days that AWS Secrets Manager waits before it can delete the secret. This value can be 0 to force deletion without recovery or range from 7 to 30 days."
-  default     = 0
-}
-
 variable "associate_public_ip_address" {
   description = "Whether to associate a public IP address with an instance in a VPC."
   type        = bool
@@ -33,16 +27,10 @@ variable "capacity_reservation_specification" {
   default     = null
 }
 
-variable "cpu_core_count" {
-  description = "Sets the number of CPU cores for an instance." # This option is only supported on creation of instance type that support CPU Options https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-optimize-cpu.html#cpu-options-supported-instances-values
-  type        = number
-  default     = null
-}
-
-variable "cpu_threads_per_core" {
-  description = "Sets the number of CPU threads per core for an instance (has no effect unless cpu_core_count is also set)."
-  type        = number
-  default     = null
+variable "cpu_options" {
+  description = " The CPU options for the instance. Applies to the instance at launch time."
+  type        = map(string)
+  default     = {}
 }
 
 variable "cpu_credits" {
@@ -79,12 +67,6 @@ variable "ephemeral_block_device" {
   description = "Customize Ephemeral (also known as Instance Store) volumes on the instance"
   type        = list(map(string))
   default     = []
-}
-
-variable "get_password_data" {
-  description = "If true, wait for password data to become available and retrieve it.  Useful for getting the administrator password for instances running Microsoft Windows."
-  type        = bool
-  default     = null
 }
 
 variable "hibernation" {
@@ -126,12 +108,6 @@ variable "ipv6_address_count" {
 variable "ipv6_addresses" {
   description = "Specify one or more IPv6 addresses from the range of the subnet to associate with the primary network interface"
   type        = list(string)
-  default     = null
-}
-
-variable "key_name" {
-  description = "Key name of the Key Pair to use for the instance; which can be managed using the `aws_key_pair` resource"
-  type        = string
   default     = null
 }
 
@@ -226,16 +202,16 @@ variable "user_data" {
   default     = null
 }
 
+variable "install_ssm_agent" {
+  type        = bool
+  description = "Whether to install ssm agent"
+  default     = true
+}
+
 variable "user_data_base64" {
   description = "Can be used instead of user_data to pass base64-encoded binary data directly. Use this instead of user_data whenever the value is not a valid UTF-8 string. For example, gzip-encoded user data must be base64-encoded and passed via this argument to avoid corruption."
   type        = string
   default     = null
-}
-
-variable "debug_script" {
-  type        = string
-  description = "Enable set -x option for userdatam use 'off' or 'on' as values"
-  default     = "off"
 }
 
 variable "extra_script" {
@@ -275,16 +251,10 @@ variable "security_group_ingress" {
   default     = {}
 }
 
-variable "create_key_pair" {
-  description = "Choose whether to create key pair"
-  type        = bool
-  default     = false
-}
-
 variable "create_instance_iam_role" {
   description = "Choose whether to create iam instance role"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "use_ebs_default_kms" {

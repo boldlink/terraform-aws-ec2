@@ -19,5 +19,4 @@ locals {
   address3        = cidrhost(flatten(local.subnet_cidr)[0], 10)
   secondary_ips   = [local.address1, local.address2, local.address3]
   vpc_id          = data.aws_vpc.supporting.id
-  vpc_cidr        = data.aws_vpc.supporting.cidr_block
 }

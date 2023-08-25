@@ -16,6 +16,12 @@ variable "instance_type" {
   default     = "t3.small"
 }
 
+variable "architecture" {
+  type        = string
+  description = "The architecture of the instance to launch"
+  default     = "x86_64"
+}
+
 variable "monitoring" {
   description = "If true, the launched EC2 instance will have detailed monitoring enabled which pulls every 1m and adds additonal cost, default monitoring doesn't add costs"
   type        = bool

@@ -16,14 +16,14 @@ variable "instance_type" {
   default     = "t3.medium"
 }
 
-variable "create_ec2_kms_key" {
-  description = "Choose whether to create kms key for ebs encryption"
-  type        = bool
-  default     = true
+variable "architecture" {
+  type        = string
+  description = "The architecture of the instance to launch"
+  default     = "amd64"
 }
 
-variable "create_key_pair" {
-  description = "Choose whether to create key pair"
+variable "create_ec2_kms_key" {
+  description = "Choose whether to create kms key for ebs encryption"
   type        = bool
   default     = true
 }

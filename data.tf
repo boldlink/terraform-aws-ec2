@@ -23,29 +23,23 @@ data "template_cloudinit_config" "config" {
   part {
     filename     = "init.cfg"
     content_type = "text/cloud-config"
-    content = templatefile("${path.module}/scripts/init.cfg",
-      {}
-    )
+    content      = templatefile("${path.module}/scripts/init.cfg", {})
   }
+
   # Base Userdata
   part {
     content_type = "text/x-shellscript"
-    content = templatefile("${path.module}/scripts/userdata.sh",
-      {
-        debug = var.debug_script,
-      }
-    )
+    content      = templatefile("${path.module}/scripts/userdata.sh", {})
   }
+
   # Cloudwatch config
   part {
     content_type = "text/x-shellscript"
-    content = templatefile("${path.module}/scripts/cwldata.sh",
-      {
-        log_group = join("", aws_cloudwatch_log_group.main.*.name),
-        debug     = var.debug_script,
-      }
-    )
+    content = templatefile("${path.module}/scripts/cwldata.sh", {
+      log_group = join("", aws_cloudwatch_log_group.main.*.name)
+    })
   }
+
   # Additional script
   part {
     content_type = "text/x-shellscript"
