@@ -13,10 +13,10 @@ locals {
 
   private_subnets = local.subnet_id[0]
   azs             = local.subnet_az[0]
-  private_ip      = cidrhost(flatten(local.subnet_cidr)[0], 15)
-  address1        = cidrhost(flatten(local.subnet_cidr)[0], 5)
-  address2        = cidrhost(flatten(local.subnet_cidr)[0], 7)
-  address3        = cidrhost(flatten(local.subnet_cidr)[0], 10)
-  secondary_ips   = [local.address1, local.address2, local.address3]
-  vpc_id          = data.aws_vpc.supporting.id
+  private_ips = [
+    cidrhost(flatten(local.subnet_cidr)[0], 5),
+    cidrhost(flatten(local.subnet_cidr)[0], 7),
+    cidrhost(flatten(local.subnet_cidr)[0], 10)
+  ]
+  vpc_id = data.aws_vpc.supporting.id
 }
