@@ -17,6 +17,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_AWS_290: "Ensure IAM policies does not allow write access without constraints"
 - fix: CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
 
+## [2.1.0] - 2023-10-12
+- fix: network interfaces dynamic block
+- fix: security group output
+- feat: ec2 network interface example
+- feat: ec2 instance from launch template example
+
 ##  [2.0.0] - 2023-07-19
 ### Changes
 - feat: Added ssm support and removed key pair creation for different linux distros
@@ -103,7 +109,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2022-02-17
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/2.1.0...HEAD
+
+[2.1.0]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/2.1.0
 [2.0.0]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/2.0.0
 [1.2.2]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.2
 [1.2.1]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.1
