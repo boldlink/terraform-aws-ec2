@@ -7,6 +7,7 @@ variable "name" {
 variable "ami" {
   description = "AMI to use for the instance. Required unless launch_template is specified and the Launch Template specifes an AMI."
   type        = string
+  default     = null
 }
 
 variable "associate_public_ip_address" {
@@ -135,7 +136,7 @@ variable "monitoring" {
   default     = false
 }
 
-variable "network_interface" {
+variable "network_interfaces" {
   description = "Customize network interfaces to be attached at instance boot time"
   type        = list(map(string))
   default     = []

@@ -135,8 +135,8 @@ resource "aws_instance" "main" {
   ebs_optimized                        = var.ebs_optimized
   disable_api_termination              = var.disable_api_termination
   monitoring                           = var.monitoring
-  vpc_security_group_ids               = [aws_security_group.main.id]
-  source_dest_check                    = var.source_dest_check
+  vpc_security_group_ids               = length(var.network_interfaces) > 0 ? null : [aws_security_group.main.id]
+  source_dest_check                    = length(var.network_interfaces) > 0 ? null : var.source_dest_check
   user_data                            = var.install_ssm_agent ? data.template_cloudinit_config.config.rendered : var.user_data
   user_data_base64                     = var.user_data_base64
   subnet_id                            = var.subnet_id
@@ -240,11 +240,11 @@ resource "aws_instance" "main" {
   }
 
   dynamic "network_interface" {
-    for_each = var.network_interface
+    for_each = var.network_interfaces
     content {
       delete_on_termination = lookup(network_interface.value, "delete_on_termination", null)
-      device_index          = network_interface.value.device_index
-      network_interface_id  = lookup(network_interface.value, "network_interface_id", null)
+      device_index          = lookup(network_interface.value, "device_index", 0)
+      network_interface_id  = lookup(network_interface.value, "network_interface_id")
     }
   }
 
