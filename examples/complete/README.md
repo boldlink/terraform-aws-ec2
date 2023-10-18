@@ -33,7 +33,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ec2_instance_complete"></a> [ec2\_instance\_complete](#module\_ec2\_instance\_complete) | ../../ | n/a |
-| <a name="module_launch_template_ec2"></a> [launch\_template\_ec2](#module\_launch\_template\_ec2) | ../../ | n/a |
+| <a name="module_ec2_with_lt"></a> [ec2\_with\_lt](#module\_ec2\_with\_lt) | ../../ | n/a |
 
 ## Resources
 
@@ -41,6 +41,7 @@
 |------|------|
 | [aws_launch_template.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
 | [aws_network_interface.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/network_interface) | resource |
+| [aws_placement_group.example](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/placement_group) | resource |
 | [aws_ami.ubuntu](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_subnet.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnet) | data source |
 | [aws_subnets.private](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/subnets) | data source |
@@ -57,6 +58,7 @@
 | <a name="input_ebs_block_device"></a> [ebs\_block\_device](#input\_ebs\_block\_device) | One or more configuration blocks with additional EBS block devices to attach to the instance. Block device configurations only apply on resource creation. | `list(any)` | <pre>[<br>  {<br>    "delete_on_termination": true,<br>    "device_name": "/dev/sdg",<br>    "encrypted": true,<br>    "volume_size": 15,<br>    "volume_type": "gp2"<br>  }<br>]</pre> | no |
 | <a name="input_ebs_optimized"></a> [ebs\_optimized](#input\_ebs\_optimized) | If true, the launched EC2 instance will be EBS-optimized | `bool` | `true` | no |
 | <a name="input_ephemeral_block_device"></a> [ephemeral\_block\_device](#input\_ephemeral\_block\_device) | Customize Ephemeral (also known as Instance Store) volumes on the instance | `list(map(string))` | <pre>[<br>  {<br>    "device_name": "/dev/sdh",<br>    "virtual_name": "ephemeral0"<br>  }<br>]</pre> | no |
+| <a name="input_install_ssm_agent"></a> [install\_ssm\_agent](#input\_install\_ssm\_agent) | Whether to install ssm agent | `bool` | `true` | no |
 | <a name="input_instance_initiated_shutdown_behavior"></a> [instance\_initiated\_shutdown\_behavior](#input\_instance\_initiated\_shutdown\_behavior) | Shutdown behavior for the instance. Amazon defaults this to stop for EBS-backed instances and terminate for instance-store instances. Cannot be set on instance-store instance | `string` | `"terminate"` | no |
 | <a name="input_instance_type"></a> [instance\_type](#input\_instance\_type) | The instance type to use for the instance. Updates to this field will trigger a stop/start of the EC2 instance | `string` | `"t3.medium"` | no |
 | <a name="input_monitoring"></a> [monitoring](#input\_monitoring) | If true, the launched EC2 instance will have detailed monitoring enabled which pulls every 1m and adds additonal cost, default monitoring doesn't add costs | `bool` | `true` | no |

@@ -26,11 +26,11 @@ module "ec2_instance_complete" {
   root_block_device                    = var.root_block_device
   ebs_block_device                     = var.ebs_block_device
   ephemeral_block_device               = var.ephemeral_block_device
-  install_ssm_agent                     = var.install_ssm_agent
+  install_ssm_agent                    = var.install_ssm_agent
   extra_script                         = templatefile("${path.module}/extra_script.sh", {})
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
   placement_group                      = aws_placement_group.example.id
-  placement_partition_number = 1
+  placement_partition_number           = 1
   capacity_reservation_specification = {
     capacity_reservation_preference = var.capacity_reservation_preference
   }
@@ -82,7 +82,7 @@ module "ec2_with_lt" {
   vpc_id            = local.vpc_id
   monitoring        = var.monitoring
   root_block_device = var.root_block_device
-  user_data_base64 = local.user_data_base64
+  user_data_base64  = local.user_data_base64
   launch_template = {
     id      = aws_launch_template.example.id
     version = "$Latest"
