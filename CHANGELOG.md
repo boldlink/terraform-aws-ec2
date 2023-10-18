@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Include ssm installation option for windows instances
 - fix: CKV_AWS_290: "Ensure IAM policies does not allow write access without constraints"
 - fix: CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
-- showcase the following ec2 options: ipv6_addresses, ipv6_address_count, user_data_base64 ,amd_sev_snp in cpu_options in complete example
+- showcase the following ec2 options: ipv6_addresses, ipv6_address_count, amd_sev_snp in cpu_options in complete example
 
 ## [2.0.1] - 2023-10-16
 - fix: network interfaces dynamic block
