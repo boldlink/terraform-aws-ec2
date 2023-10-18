@@ -1,6 +1,12 @@
 ##############################################################
 ### This example shows the complete values to use this module
 ##############################################################
+
+resource "aws_placement_group" "example" {
+  name     = "${var.name}-pg"
+  strategy = "partition"
+}
+
 module "ec2_instance_complete" {
   #checkov:skip=CKV_AWS_290: "Ensure IAM policies does not allow write access without constraints"
   #checkov:skip=CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
@@ -20,8 +26,11 @@ module "ec2_instance_complete" {
   root_block_device                    = var.root_block_device
   ebs_block_device                     = var.ebs_block_device
   ephemeral_block_device               = var.ephemeral_block_device
+  install_ssm_agent                     = var.install_ssm_agent
   extra_script                         = templatefile("${path.module}/extra_script.sh", {})
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
+  placement_group                      = aws_placement_group.example.id
+  placement_partition_number = 1
   capacity_reservation_specification = {
     capacity_reservation_preference = var.capacity_reservation_preference
   }
@@ -64,8 +73,8 @@ resource "aws_launch_template" "example" {
   tags = merge({ Name = "${var.name}-lt" }, var.tags)
 }
 
-module "launch_template_ec2" {
-  #heckov:skip=CKV_AWS_8: "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted"
+module "ec2_with_lt" {
+  #checkov:skip=CKV_AWS_8: "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted"
   source            = "../../"
   name              = "${var.name}-lt"
   instance_type     = var.instance_type
@@ -73,6 +82,7 @@ module "launch_template_ec2" {
   vpc_id            = local.vpc_id
   monitoring        = var.monitoring
   root_block_device = var.root_block_device
+  user_data_base64 = local.user_data_base64
   launch_template = {
     id      = aws_launch_template.example.id
     version = "$Latest"

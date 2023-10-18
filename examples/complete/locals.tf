@@ -19,4 +19,14 @@ locals {
     cidrhost(flatten(local.subnet_cidr)[0], 10)
   ]
   vpc_id = data.aws_vpc.supporting.id
+  user_data_base64 = base64encode(
+    <<-EOF
+    #!/bin/bash
+    sudo apt update
+    sudo apt install -y apache2
+    sudo systemctl start apache2
+    sudo systemctl enable apache2
+    echo "Hello from your EC2 instance!" > /var/www/html/index.html
+    EOF
+  )
 }
