@@ -16,6 +16,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: Include ssm installation option for windows instances
 - fix: CKV_AWS_290: "Ensure IAM policies does not allow write access without constraints"
 - fix: CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
+- showcase the following ec2 options: ipv6_addresses, ipv6_address_count, amd_sev_snp in cpu_options in complete example
+
+## [2.0.1] - 2023-10-16
+- fix: network interfaces dynamic block
+- fix: security group output
+- ec2 network interface and placement group examples
+- ec2 instance example created from a launch template and contains a user_data_base64 script
+- set install_ssm_agent to be false by default
 
 ##  [2.0.0] - 2023-07-19
 ### Changes
@@ -103,7 +111,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2022-02-17
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/2.0.0...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/2.0.1...HEAD
+
+[2.0.1]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/2.0.1
 [2.0.0]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/2.0.0
 [1.2.2]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.2
 [1.2.1]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.1

@@ -60,7 +60,7 @@ output "private_ip" {
 
 output "security_groups" {
   description = "List of Security Group IDs used by the instance"
-  value       = [aws_instance.main.security_groups]
+  value       = [aws_instance.main.vpc_security_group_ids]
 }
 
 output "ebs_block_device_volume_id" {
