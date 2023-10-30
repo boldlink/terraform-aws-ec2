@@ -19,7 +19,7 @@ module "ec2_instance_windows" {
       to_port     = 443
       protocol    = "tcp"
       cidr_blocks = [local.vpc_cidr]
-    }    
+    }
   ]
   security_group_egress = [
     {
