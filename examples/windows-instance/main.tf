@@ -13,6 +13,14 @@ module "ec2_instance_windows" {
   monitoring                           = var.monitoring
   metadata_options                     = var.metadata_options
   install_ssm_agent                    = var.install_ssm_agent
+  security_group_ingress = [
+    {
+      from_port   = 443
+      to_port     = 443
+      protocol    = "tcp"
+      cidr_blocks = [local.vpc_cidr]
+    }    
+  ]
   security_group_egress = [
     {
       from_port   = 0
@@ -21,6 +29,7 @@ module "ec2_instance_windows" {
       cidr_blocks = ["0.0.0.0/0"]
     }
   ]
+
   capacity_reservation_specification = {
     capacity_reservation_preference = var.capacity_reservation_preference
   }

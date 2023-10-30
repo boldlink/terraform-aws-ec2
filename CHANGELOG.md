@@ -21,7 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [2.0.2] - 2023-10-30
 - fix: module's security group creation option
 - added an external security group in the complete example to allow ssm connection
-- added example egress rule to windows example
+- added example ingress and egress rules to windows example
 
 ## [2.0.1] - 2023-10-16
 - fix: network interfaces dynamic block
