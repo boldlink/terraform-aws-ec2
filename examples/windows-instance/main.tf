@@ -12,6 +12,15 @@ module "ec2_instance_windows" {
   instance_initiated_shutdown_behavior = var.instance_initiated_shutdown_behavior
   monitoring                           = var.monitoring
   metadata_options                     = var.metadata_options
+  install_ssm_agent                    = var.install_ssm_agent
+  security_group_egress = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
   capacity_reservation_specification = {
     capacity_reservation_preference = var.capacity_reservation_preference
   }

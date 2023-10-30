@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
 - showcase the following ec2 options: ipv6_addresses, ipv6_address_count, amd_sev_snp in cpu_options in complete example
 
+## [2.0.2] - 2023-10-30
+- fix: module's security group creation option
+- added an external security group in the complete example to allow ssm connection
+- added example egress rule to windows example
+
 ## [2.0.1] - 2023-10-16
 - fix: network interfaces dynamic block
 - fix: security group output
@@ -111,8 +116,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0] - 2022-02-17
 - Initial commit
 
-[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/2.0.1...HEAD
+[Unreleased]: https://github.com/boldlink/terraform-aws-ec2/compare/2.0.2...HEAD
 
+[2.0.2]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/2.0.2
 [2.0.1]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/2.0.1
 [2.0.0]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/2.0.0
 [1.2.2]: https://github.com/boldlink/terraform-aws-ec2/releases/tag/1.2.2
