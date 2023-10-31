@@ -7,6 +7,22 @@ resource "aws_placement_group" "example" {
   strategy = "partition"
 }
 
+resource "aws_security_group" "network_interface" {
+  name        = "${var.name}-sg"
+  description = "${var.name} security group"
+  vpc_id      = local.vpc_id
+
+
+  egress {
+    description      = "Allow egress traffic rule"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+}
+
 module "ec2_instance_complete" {
   #checkov:skip=CKV_AWS_290: "Ensure IAM policies does not allow write access without constraints"
   #checkov:skip=CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
@@ -45,9 +61,10 @@ module "ec2_instance_complete" {
 }
 
 resource "aws_network_interface" "example" {
-  subnet_id   = local.subnet_id[0]
-  private_ips = local.private_ips
-  tags        = merge({ Name = var.name }, var.tags)
+  subnet_id       = local.subnet_id[0]
+  private_ips     = local.private_ips
+  security_groups = [aws_security_group.network_interface.id]
+  tags            = merge({ Name = var.name }, var.tags)
 }
 
 

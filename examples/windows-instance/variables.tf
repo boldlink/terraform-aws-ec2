@@ -90,3 +90,9 @@ variable "tags" {
     LayerId            = "Example"
   }
 }
+
+variable "install_ssm_agent" {
+  type        = bool
+  description = "Whether to install ssm agent"
+  default     = true
+}

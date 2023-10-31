@@ -252,6 +252,12 @@ variable "security_group_ingress" {
   default     = {}
 }
 
+variable "security_group_egress" {
+  description = "Specify the egress rule for the security group"
+  type        = any
+  default     = {}
+}
+
 variable "create_instance_iam_role" {
   description = "Choose whether to create iam instance role"
   type        = bool

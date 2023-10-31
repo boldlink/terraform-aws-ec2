@@ -30,6 +30,7 @@ resource "aws_cloudwatch_log_group" "main" {
 ### Security Group
 ###################################
 resource "aws_security_group" "main" {
+  count       = length(var.network_interfaces) > 0 ? 0 : 1
   name        = "${var.name}-security-group"
   description = "Control traffic to the EC2 instance"
   vpc_id      = var.vpc_id
@@ -47,13 +48,16 @@ resource "aws_security_group" "main" {
     }
   }
 
-  egress {
-    description      = "Rule to allow all outbound traffic"
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+  dynamic "egress" {
+    for_each = var.security_group_egress
+    content {
+      description      = "Rule to allow port ${try(egress.value.from_port, "")} outbound traffic"
+      from_port        = try(egress.value.from_port, null)
+      to_port          = try(egress.value.to_port, null)
+      protocol         = try(egress.value.protocol, null)
+      cidr_blocks      = try(egress.value.cidr_blocks, [])
+      ipv6_cidr_blocks = try(egress.value.ipv6_cidr_blocks, [])
+    }
   }
 }
 
@@ -135,7 +139,7 @@ resource "aws_instance" "main" {
   ebs_optimized                        = var.ebs_optimized
   disable_api_termination              = var.disable_api_termination
   monitoring                           = var.monitoring
-  vpc_security_group_ids               = length(var.network_interfaces) > 0 ? null : [aws_security_group.main.id]
+  vpc_security_group_ids               = length(var.network_interfaces) > 0 ? null : [aws_security_group.main[0].id]
   source_dest_check                    = length(var.network_interfaces) > 0 ? null : var.source_dest_check
   user_data                            = var.install_ssm_agent ? data.template_cloudinit_config.config.rendered : var.user_data
   user_data_base64                     = var.user_data_base64
