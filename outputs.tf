@@ -82,3 +82,25 @@ output "tags_all" {
   description = "A map of tags assigned to the resource, including those inherited from the provider default_tags configuration block"
   value       = aws_instance.main.tags_all
 }
+
+## IAM Role
+
+output "role_arn" {
+  value       = try(aws_iam_role.main[0].arn, null)
+  description = "Amazon Resource Name (ARN) specifying the ec2 role."
+}
+
+output "role_id" {
+  value       = try(aws_iam_role.main[0].id, null)
+  description = "Name of the ec2 role."
+}
+
+output "role_name" {
+  value       = try(aws_iam_role.main[0].name, null)
+  description = "Name of the ec2 role."
+}
+
+output "role_unique_id" {
+  value       = try(aws_iam_role.main[0].unique_id, null)
+  description = "Stable and unique string identifying the ec2 role."
+}

@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
 - showcase the following ec2 options: ipv6_addresses, ipv6_address_count, amd_sev_snp in cpu_options in complete example
 
+## [2.0.3] - 2023-11-03
+- fix: added iam role outputs
+- fix: removed iam_policy to be added outside using iam_policy module
+- added an example external policy to the complete example
+
 ## [2.0.2] - 2023-10-30
 - fix: module's security group creation option
 - added an external security group in the complete example to allow ssm connection

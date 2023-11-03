@@ -270,12 +270,6 @@ variable "use_ebs_default_kms" {
   default     = false
 }
 
-variable "ec2_role_policy" {
-  description = "Specify the policy for the ec2 permissions"
-  type        = string
-  default     = null
-}
-
 variable "enable_key_rotation" {
   description = "Choose whether to enable key rotation"
   type        = bool

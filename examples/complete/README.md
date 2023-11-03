@@ -26,13 +26,14 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.23.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.24.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_ec2_instance_complete"></a> [ec2\_instance\_complete](#module\_ec2\_instance\_complete) | ../../ | n/a |
+| <a name="module_ec2_policy"></a> [ec2\_policy](#module\_ec2\_policy) | boldlink/iam-policy/aws | 1.1.0 |
 | <a name="module_ec2_with_lt"></a> [ec2\_with\_lt](#module\_ec2\_with\_lt) | ../../ | n/a |
 
 ## Resources
