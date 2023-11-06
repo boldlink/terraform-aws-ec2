@@ -1,7 +1,7 @@
 variable "name" {
   description = "The name of the stack"
   type        = string
-  default     = "cpu_credits-ec2-example"
+  default     = "cpu-credits-ec2-example"
 }
 
 variable "supporting_resources_name" {

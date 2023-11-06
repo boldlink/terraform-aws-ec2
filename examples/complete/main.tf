@@ -12,7 +12,6 @@ resource "aws_security_group" "network_interface" {
   description = "${var.name} security group"
   vpc_id      = local.vpc_id
 
-
   egress {
     description      = "Allow egress traffic rule"
     from_port        = 0
@@ -21,6 +20,31 @@ resource "aws_security_group" "network_interface" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
+}
+
+# Example external policy to attach to the ec2 instance Role
+module "ec2_policy" {
+  source                 = "boldlink/iam-policy/aws"
+  version                = "1.1.0"
+  policy_name            = "${var.name}-policy"
+  policy_attachment_name = "${var.name}-attachment"
+  description            = "IAM policy to grant EC2 describe permissions"
+  roles                  = [module.ec2_instance_complete.role_name]
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Sid = "AllowGetEncryptionConfiguration"
+        Action = ["s3:GetEncryptionConfiguration",
+          "s3:PutObject",
+          "s3:PutObjectAcl"
+        ]
+        Effect   = "Allow"
+        Resource = "arn:aws:s3:::example-bucket" #This is an example ARN
+      }
+    ]
+  })
+  tags = merge({ Name = "${var.name}-policy" }, var.tags)
 }
 
 module "ec2_instance_complete" {
@@ -66,7 +90,6 @@ resource "aws_network_interface" "example" {
   security_groups = [aws_security_group.network_interface.id]
   tags            = merge({ Name = var.name }, var.tags)
 }
-
 
 ## Creating an ec2 instance using a launch template
 resource "aws_launch_template" "example" {

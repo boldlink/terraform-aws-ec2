@@ -66,7 +66,7 @@ resource "aws_security_group" "main" {
 ##################################################
 resource "aws_iam_instance_profile" "main" {
   count = var.create_instance_iam_role ? 1 : 0
-  name  = "${var.name}_iam_role"
+  name  = "${var.name}-instance-profile"
   path  = var.iam_role_path
   role  = join("", aws_iam_role.main.*.name)
   tags  = var.tags
@@ -75,23 +75,9 @@ resource "aws_iam_instance_profile" "main" {
 resource "aws_iam_role" "main" {
   count              = var.create_instance_iam_role ? 1 : 0
   description        = "${var.name} EC2 IAM Role"
-  name               = "${var.name}.iam_role"
+  name               = "${var.name}-iam-role"
   path               = var.iam_role_path
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
-}
-
-resource "aws_iam_policy" "main" {
-  count       = var.create_instance_iam_role && var.ec2_role_policy != null ? 1 : 0
-  name        = "${var.name}-ec2-policy"
-  description = "${var.name} EC2 IAM policy"
-  path        = var.iam_role_path
-  policy      = var.ec2_role_policy
-}
-
-resource "aws_iam_role_policy_attachment" "main" {
-  count      = var.create_instance_iam_role && var.ec2_role_policy != null ? 1 : 0
-  role       = join("", aws_iam_role.main.*.name)
-  policy_arn = aws_iam_policy.main[0].arn
 }
 
 ## Managed Policy to allow cloudwatch agent to write metrics to CloudWatch
