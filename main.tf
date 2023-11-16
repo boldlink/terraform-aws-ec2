@@ -30,11 +30,12 @@ resource "aws_cloudwatch_log_group" "main" {
 ### Security Group
 ###################################
 resource "aws_security_group" "main" {
-  count       = length(var.network_interfaces) > 0 ? 0 : 1
-  name        = "${var.name}-security-group"
-  description = "Control traffic to the EC2 instance"
-  vpc_id      = var.vpc_id
-  tags        = var.tags
+  count                  = length(var.network_interfaces) > 0 ? 0 : 1
+  name                   = "${var.name}-security-group"
+  description            = "Control traffic to the EC2 instance"
+  revoke_rules_on_delete = var.revoke_rules_on_delete
+  vpc_id                 = var.vpc_id
+  tags                   = var.tags
 
   dynamic "ingress" {
     for_each = var.security_group_ingress
@@ -45,6 +46,9 @@ resource "aws_security_group" "main" {
       protocol         = try(ingress.value.protocol, null)
       cidr_blocks      = try(ingress.value.cidr_blocks, [])
       ipv6_cidr_blocks = try(ingress.value.ipv6_cidr_blocks, [])
+      prefix_list_ids  = try(ingress.value.prefix_list_ids, [])
+      security_groups  = try(ingress.value.security_groups, [])
+      self             = try(ingress.value.self, null)
     }
   }
 
@@ -57,6 +61,9 @@ resource "aws_security_group" "main" {
       protocol         = try(egress.value.protocol, null)
       cidr_blocks      = try(egress.value.cidr_blocks, [])
       ipv6_cidr_blocks = try(egress.value.ipv6_cidr_blocks, [])
+      prefix_list_ids  = try(egress.value.prefix_list_ids, [])
+      security_groups  = try(egress.value.security_groups, [])
+      self             = try(egress.value.self, null)
     }
   }
 }

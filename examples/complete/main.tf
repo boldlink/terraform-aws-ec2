@@ -74,12 +74,14 @@ module "ec2_instance_complete" {
   capacity_reservation_specification = {
     capacity_reservation_preference = var.capacity_reservation_preference
   }
+
   network_interfaces = [
     {
       network_interface_id  = aws_network_interface.example.id
       delete_on_termination = false
     }
   ]
+
   timeouts = var.timeouts
   tags     = merge({ Name = var.name }, var.tags)
 }
