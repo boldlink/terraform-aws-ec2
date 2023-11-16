@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- fix: investigate why windows instance is not showing under ssm target instances though role is properly configured
 - feat: add cloud-init script for creating windows os SSM user when enabled.
 - feat: Allow the input of a custom awslogs.json configuration file on cwldata.sh installation`
 - feat: Add support for installation and configuration of cloudwatch agent on Windows instances, see doc [here](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/install-CloudWatch-Agent-commandline-fleet.html).

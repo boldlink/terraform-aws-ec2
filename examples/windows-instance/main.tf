@@ -33,6 +33,7 @@ module "ec2_instance_windows" {
   monitoring                           = var.monitoring
   metadata_options                     = var.metadata_options
   install_ssm_agent                    = var.install_ssm_agent
+  revoke_rules_on_delete               = false
 
   security_group_ingress = [
     {
