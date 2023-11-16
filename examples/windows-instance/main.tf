@@ -1,3 +1,18 @@
+resource "aws_security_group" "external" {
+  name        = "${var.name}-sg"
+  description = "${var.name} security group"
+  vpc_id      = local.vpc_id
+
+  egress {
+    description      = "Allow egress traffic rule"
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+    ipv6_cidr_blocks = ["::/0"]
+  }
+}
+
 module "ec2_instance_windows" {
   source                               = "../../"
   name                                 = var.name
@@ -15,12 +30,13 @@ module "ec2_instance_windows" {
   install_ssm_agent                    = var.install_ssm_agent
   security_group_ingress = [
     {
-      from_port   = 443
-      to_port     = 443
-      protocol    = "tcp"
-      cidr_blocks = [local.vpc_cidr]
+      from_port       = 443
+      to_port         = 443
+      protocol        = "tcp"
+      security_groups = [aws_security_group.external.id]
     }
   ]
+
   security_group_egress = [
     {
       from_port   = 0

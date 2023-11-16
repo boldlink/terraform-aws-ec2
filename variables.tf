@@ -191,6 +191,12 @@ variable "tenancy" {
   default     = null
 }
 
+variable "revoke_rules_on_delete" {
+  type        = bool
+  description = "(Optional) Instruct Terraform to revoke all of the Security Groups attached ingress and egress rules before deleting the rule itself. This is normally not needed, however certain AWS services such as Elastic Map Reduce may automatically add required rules to security groups used with the service, and those rules may contain a cyclic dependency that prevent the security groups from being destroyed without removing the dependency first."
+  default     = true
+}
+
 variable "timeouts" {
   description = "Define maximum timeout for creating, updating, and deleting EC2 instance resources"
   type        = map(string)
