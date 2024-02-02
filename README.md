@@ -132,7 +132,7 @@ module "ec2_instance_minimum" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.25.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.35.0 |
 | <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
 
 ## Modules
@@ -283,4 +283,4 @@ make cleansupporting
 make cleanstatefiles
 ```
 
-#### BOLDLink-SIG 2023
+#### BOLDLink-SIG 2024
