@@ -50,7 +50,6 @@ module "ec2_policy" {
 module "ec2_instance_complete" {
   #checkov:skip=CKV_AWS_290: "Ensure IAM policies does not allow write access without constraints"
   #checkov:skip=CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
-  #checkov:skip=CKV2_AWS_5: "Ensure that Security Groups are attached to another resource"
   source                               = "../../"
   name                                 = var.name
   ami                                  = data.aws_ami.ubuntu.id

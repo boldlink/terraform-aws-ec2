@@ -30,7 +30,7 @@ resource "aws_cloudwatch_log_group" "main" {
 ### Security Group
 ###################################
 resource "aws_security_group" "main" {
-  count                  = length(var.network_interfaces) > 0 ? 0 : 1
+  count                  = length(var.network_interfaces) == 0 ? 1 : 0
   name                   = "${var.name}-security-group"
   description            = "Control traffic to the EC2 instance"
   revoke_rules_on_delete = var.revoke_rules_on_delete
