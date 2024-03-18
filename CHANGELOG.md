@@ -19,6 +19,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - fix: CKV_AWS_355: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
 - showcase the following ec2 options: ipv6_addresses, ipv6_address_count, amd_sev_snp in cpu_options in complete example
 
+## [2.0.6] - 2024-03-16
+- fix checkov alert in complete example: CKV2_AWS_5: "Ensure that Security Groups are attached to another resource"
+
 ## [2.0.5] - 2024-02-02
 - fix: CKV2_AWS_5: "Ensure that Security Groups are attached to another resource
 
