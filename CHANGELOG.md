@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
-- feat: use the module to create network interface(s) to attach to the ec2 instance
+- feat: use the module to create network interface(s) attached to the ec2 instance
 - remove option to attach external network interfaces
 - fix: investigate why windows instance is not showing under ssm target instances though role is properly configured
 - feat: add cloud-init script for creating windows os SSM user when enabled.
